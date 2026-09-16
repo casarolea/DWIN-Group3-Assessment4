@@ -1,0 +1,119 @@
+@font-face {
+    font-family:'RalewayEB';
+    src: url(../fonts/raleway-extrabold.ttf);
+}
+
+@font-face {
+    font-family: 'RalewayB';
+    src: url(../fonts/raleway-bold.ttf)
+}
+
+.ralewayextrabold {
+    font-family: 'RalewayEB';
+  }
+
+.ralewaybold {
+    font-family: 'RalewayB';
+}
+
+.container1{
+    background-image: url(../images/homepagefood.jpg);
+    background-size: cover;
+    background-position: center;
+    min-height: 90vh;
+} 
+
+
+.logo {
+    width: 80px;
+    height: auto;
+    margin-right: 8px;
+}
+
+/* .nav-name {
+    color: #6a99df !important;
+    font-size: 30px;
+    margin-right: 40px;
+} */
+
+.nav-text1 {
+    color: #f8f6ee !important;
+    font-size: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.nav-text2 {
+    color: #654c43 !important;
+    font-size: 20px;
+}
+
+.nav-text3 {
+    color: #f8f6ee !important;
+    font-size: 20px;
+}
+
+.navbar-brand {
+    margin-right: 40px;
+}
+
+.nav-link {
+    margin-right: 20px;
+}
+
+/* .navbar-search-input {
+    background-color: #654c43;
+    border: 2px solid #f8f6ee; 
+    color: #f8f6ee;
+} */
+
+
+.navbar-search-input::placeholder {
+    color: #f8f6ee;
+    opacity: 0.85;
+}
+
+.navbar-search-btn {
+    background-color: #654c43;
+    border: 1px solid #654c43;
+    color: #f8f6ee;
+}
+
+
+.first-block {
+    background-color: #f8f6ee;
+    padding: 50px 5%;
+}
+
+.second-block {
+    background-color: #f8f6ee;
+    padding: 50px 5%;
+}
+
+.third-block {
+    background-color: #f8f6ee;
+    padding: 50px 5%;
+}
+
+.footer {
+    background-color: #8f6956;
+    padding: 50px 5%;
+}
+
+.footer-text1 {
+    color: #f8f6ee !important;
+}
+
+.footer-text2 {
+    color: #f8f6ee !important;
+    font-size: 13px;
+}
+
+.footer-links {
+    color: #e5efe7;
+    text-decoration: none;
+}
+
+.footer-links:hover {
+    color: #e5efe7;
+    text-decoration: underline
+}
