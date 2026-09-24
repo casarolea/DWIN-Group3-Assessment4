@@ -99,7 +99,7 @@
       <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
         <!-- Content -->
         <h6 class="fw-bold mb-4">
-        <a class="fas fa-gem me-3 ralewayextrabold footer-text1" href="index.php"><img class="logo" src="../images/cblogo2.png" alt="CookBook Logo" title="CookBook logo">CookBook</a>
+        <a class="fas fa-gem me-3 gochihand footer-text1" href="index.php"><img class="logo" src="../images/cblogo2.png" alt="CookBook Logo" title="CookBook logo">CookBook</a>
         </h6>
         <p class="footer-text2 ralewaybold">
           Improve the cooking experience.
@@ -169,6 +169,6 @@
 </footer>
 <!-- Footer -->
 <!-- end of footer -->
- 
+
 </body>
 </html>
