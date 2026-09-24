@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <!-- local css -->
-      <link rel="stylesheet" href="styles/styles.css">
+      <link rel="stylesheet" href="../styles/styles.css">
     <!-- end of local csss -->
 
     <!-- Required meta tags -->
@@ -13,39 +13,28 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <title>CookBook</title>
-    <link rel="icon" type="image/x-icon" href="images/cookbooklogo2.png">
+    <link rel="icon" type="image/x-icon" href="../images/cblogo2.png">
 
   </head>
 
   <body>
 
 <!-- This is the start of the nav bar -->
-
-<div class="container1">
  
 <!-- THIS IS THE START OF THE NAV BAR (MENU SECTION) -->
-<nav class="navbar navbar-expand-lg navbar-light">
-  <img class="logo" href="index.php" src="images/cookbooklogo2.png" alt="CookBook Logo" title="CookBook logo">
+<nav class="navbar navbar-expand-lg navbar-light first-block">
+  <a class="gochihand nav-name" href="index.php"><img class="logo" src="../images/cblogo1.png" alt="CookBook Logo" title="CookBook logo">CookBook</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ralewayextrabold nav-text">
-          <li class="nav-item active">
-            <a class="nav-item nav-link nav-text1 active" href="index.php">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item dropdown nav-text3">
-            <a class="nav-link dropdown-toggle nav-text1" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Recipes
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item nav-text2" href="#">View Recipes</a>
-              <a class="dropdown-item nav-text2" href="#">Create Recipes</a>
-            </div>
+          <li class="nav-item">
+            <a class="nav-item nav-link nav-text4" href="#">RECIPES</a>
           </li>
           <li class="nav-item">
-            <a class="nav-item nav-link nav-text1" href="#">Favorites</a>
+            <a class="nav-item nav-link nav-text4" href="#">COLLECTIONS</a>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
@@ -53,7 +42,6 @@
       <button class="btn my-2 my-sm-0 navbar-search-btn" type="submit">Search</button>
     </form>
       </div>
-</div>
 </nav>
 <!-- THIS IS THE END OF THE NAV BAR (MENU SECTION) -->
 
@@ -95,7 +83,7 @@
       <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
         <!-- Content -->
         <h6 class="fw-bold mb-4">
-        <a class="fas fa-gem me-3 ralewayextrabold footer-text1" href="index.php"><img class="logo" src="images/cookbooklogo2.png" alt="CookBook Logo" title="CookBook logo">CookBook</a>
+        <a class="fas fa-gem me-3 gochihand footer-text1" href="index.php"><img class="logo" src="../images/cblogo2.png" alt="CookBook Logo" title="CookBook logo">CookBook</a>
         </h6>
         <p class="footer-text2 ralewaybold">
           Improve the cooking experience.

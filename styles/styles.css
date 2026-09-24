@@ -8,6 +8,11 @@
     src: url(../fonts/raleway-bold.ttf)
 }
 
+@font-face {
+    font-family: 'GochiHand';
+    src: url(../fonts/GochiHand-Regular.ttf);
+}
+
 .ralewayextrabold {
     font-family: 'RalewayEB';
   }
@@ -16,13 +21,9 @@
     font-family: 'RalewayB';
 }
 
-.container1{
-    background-image: url(../images/homepagefood.jpg);
-    background-size: cover;
-    background-position: center;
-    min-height: 90vh;
-} 
-
+.gochihand {
+    font-family: 'GochiHand';
+}
 
 .logo {
     width: 80px;
@@ -30,11 +31,11 @@
     margin-right: 8px;
 }
 
-/* .nav-name {
-    color: #6a99df !important;
+.nav-name {
+    color: #654c43 !important;
     font-size: 30px;
     margin-right: 40px;
-} */
+}
 
 .nav-text1 {
     color: #f8f6ee !important;
@@ -49,6 +50,11 @@
 
 .nav-text3 {
     color: #f8f6ee !important;
+    font-size: 20px;
+}
+
+.nav-text4 {
+    color: #8f6956 !important;
     font-size: 20px;
 }
 
