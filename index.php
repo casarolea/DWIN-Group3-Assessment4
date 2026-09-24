@@ -1,170 +1,156 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- local css -->
-      <link rel="stylesheet" href="styles/styles.css">
-    <!-- end of local csss -->
-
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CookBook | Home</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<body>
 
-    <title>CookBook</title>
-    <link rel="icon" type="image/x-icon" href="images/cookbooklogo2.png">
+<header>
+    <a href="index.php" class="logo-link">
+        <img src="images/cookbooklogo2.png"
+             alt="CookBook Logo"
+             title="CookBook Logo"
+             class="logo">
+        <h1>CookBook</h1>
+    </a>
 
-  </head>
+            <li><a href="recipes.php">Recipes</a></li>
+            <li><a href="collection.php">Collection</a></li>
 
-  <body>
-
-<!-- This is the start of the nav bar -->
-
-<div class="container1">
- 
-<!-- THIS IS THE START OF THE NAV BAR (MENU SECTION) -->
-<nav class="navbar navbar-expand-lg navbar-light">
-  <img class="logo" href="index.php" src="images/cookbooklogo2.png" alt="CookBook Logo" title="CookBook logo">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ralewayextrabold nav-text">
-          <li class="nav-item active">
-            <a class="nav-item nav-link nav-text1 active" href="index.php">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item dropdown nav-text3">
-            <a class="nav-link dropdown-toggle nav-text1" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Recipes
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item nav-text2" href="#">View Recipes</a>
-              <a class="dropdown-item nav-text2" href="#">Create Recipes</a>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-item nav-link nav-text1" href="#">Favorites</a>
-          </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn my-2 my-sm-0 navbar-search-btn" type="submit">Search</button>
+    <form action="search.php" method="get" class="search-bar">
+        <input type="text"
+               name="query"
+               placeholder="Search recipes..."
+               aria-label="Search">
+        <button type="submit">Search</button>
     </form>
-      </div>
-</div>
-</nav>
-<!-- THIS IS THE END OF THE NAV BAR (MENU SECTION) -->
 
-<!-- This is the start of the first-block -->
-<section class = "first-block">
+            <li><a href="login.php">Login</a></li>
+            <li><a href="register.php">Register</a></li>
+</header>
 
-</section>
-<!-- This is the end of the first-block -->
 
-<!-- This is the start of the second-block -->
-<section class = "second-block">
-  
-</section>
-<!-- This is the end of the second-block -->
+<div class="container">
+    <main>
+        <img src="images/Test1.jpg"
+        alt="Test1"
+        title="Test1">
 
-<!-- This is the start of the third-block -->
-<section class = "third-block">
-  
-</section>
-<!-- This is the end of the third-block -->
+        <h2>Improve Your Cooking Experience.</h2>
+        <h3>Different recipes available from different individuals around the world!</h3>
 
-<!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <li><a href="recipes.php"> View Recipes</a></li>
 
-<!-- start of footer -->
-
- <!-- Footer -->
-<footer class="text-center text-lg-start bg-body-tertiary text-muted footer">
-
-<!-- Section: Links  -->
-<section class="">
-  <div class="container text-center mt-5">
-    <!-- Grid row -->
-    <div class="row mt-3">
-      <!-- Grid column -->
-      <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-        <!-- Content -->
-        <h6 class="fw-bold mb-4">
-        <a class="fas fa-gem me-3 ralewayextrabold footer-text1" href="index.php"><img class="logo" src="images/cookbooklogo2.png" alt="CookBook Logo" title="CookBook logo">CookBook</a>
-        </h6>
-        <p class="footer-text2 ralewaybold">
-          Improve the cooking experience.
-        </p>
         <hr>
-        <p>
-          <a href="#" class="footer-links ralewaybold footer-text2">Instagram</a>
-          <a href="#" class="footer-links ralewaybold footer-text2">Facebook</a>
-          <a href="#" class="footer-links ralewaybold footer-text2">Tiktok</a>
-          <a href="#" class="footer-links ralewaybold footer-text2">YouTube</a>
-        </p>
-      </div>
-      <!-- Grid column -->
+        <h2>POPULAR RECIPES</h2>
+            <div class="popular-grid">
+            <div class="recipe-card">
+                <img src="images/recipe1.jpg" alt="Creamy Garlic Pasta" title="Creamy Garlic Pasta">
+                <h3>Creamy Garlic Pasta</h3>
+            </div>
+            <div class="recipe-card">
+                <img src="images/recipe2.jpg" alt="Spicy Chicken Tacos" title="Spicy Chicken Tacos">
+                <h3>Spicy Chicken Tacos</h3>
+            </div>
+            <div class="recipe-card">
+                <img src="images/recipe3.jpg" alt="Berry Almond Smoothie" title="Berry Almond Smoothie">
+                <h3>Berry Almond Smoothie</h3>
+            </div>
+            <div class="recipe-card">
+                <img src="images/recipe4.jpg" alt="Chocolate Lava Cake" title="Chocolate Lava Cake">
+                <h3>Chocolate Lava Cake</h3>
+            </div>
+        </div>
 
+        <hr>
+        <h2>Browser Recipes Categories</h2>
+                <div class="category-grid">
+            <a href="breakfast.php" class="category-card">
+                <img src="images/category-breakfast.jpg" alt="Breakfast" title="Breakfast Recipes">
+                <h3>Breakfast</h3>
+                <p>Start your day right</p>
+            </a>
+            <a href="lunch.php" class="category-card">
+                <img src="images/category-lunch.jpg" alt="Lunch" title="Lunch Recipes">
+                <h3>Lunch</h3>
+                <p>Midday fuel</p>
+            </a>
+            <a href="dinner.php" class="category-card">
+                <img src="images/category-dinner.jpg" alt="Dinner" title="Dinner Recipes">
+                <h3>Dinner</h3>
+                <p>Evening favourites</p>
+            </a>
+        </div>
 
-      <!-- Grid column -->
-      <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-        <!-- Links -->
-        <h6 class="text-uppercase ralewayextrabold footer-text1 mb-4">
-          Quick links
-        </h6>
-        <p>
-          <a href="index.php" class="footer-links ralewaybold">Home</a>
-        </p>
-        <p>
-          <a href="#" class="footer-links ralewaybold">Recipes</a>
-        </p>
-        <p>
-          <a href="#" class="footer-links ralewaybold">Favourites</a>
-        </p>
-      </div>
-      <!-- Grid column -->
+        <hr>
+        <h2>Meet The Developers</h2>
+        <p>Joewiey Franzine Ibanez</p>
+        <p>Sheirina Glee Nadera</p>
+        <p>Regil Maharjan</p>
+        <p>Chauncey Ariel Nieto</p>
+        <p>Cassandra Noeribelle Dejucos</p>
+    </main>
 
-      <!-- Grid column -->
-      <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-        <!-- Links -->
-        <h6 class="text-uppercase ralewayextrabold footer-text1 mb-4">GROUP INFORMATION</h6>
-        <p>
-          <a class="footer-links ralewaybold footer-text2">Joewiey Franzine Ibanez - K231663</a>
-        </p>
-        <p>
-          <a class="footer-links ralewaybold footer-text2">Sheirina Glee Nadera - K240664</a>
-        </p>
-        <p>
-          <a class="footer-links ralewaybold footer-text2">Regil Maharjan - K240722</a>
-        </p>
-        <p>
-          <a class="footer-links ralewaybold footer-text2">Chauncey Ariel Nieto - K240938</a>
-        </p>
-        <p>
-          <a class="footer-links ralewaybold footer-text2">Cassandra Noeribelle Dejucos - K240945</a>
-        </p>
-      </div>
-      <!-- Grid column -->
-    </div>
-    <!-- Grid row -->
-  </div>
-</section>
-<!-- Section: Links  -->
-
-<!-- Copyright -->
-<div class="text-center p-4">
-<p class ="ralewaybold footer-text2">This website was created for the final assessment for DWIN309 at Kent Institute Australia - Trimester 2, 2026</p>
-  <p class ="ralewaybold footer-text2">&copy; CookBook 2026. All rights reserved.</p>
 </div>
-<!-- Copyright -->
+
+<footer>
+    <img src="images/cookbooklogo2.png"
+             alt="CookBook Logo"
+             title="CookBook Logo"
+             class="logo">
+        <h3>CookBook</h3>
+        <p>Improve The Cooking Experience</p>
+            <p>
+                <a href="https://www.instagram.com"
+                target="_blank">
+                Instagram Profile
+            </a>
+        </p>
+
+         <p>
+            <a href="https://www.facebook.com"
+            target="_blank">
+            Facebook Profile
+            </a>
+        </p>     
+
+            <p>
+                <a href="https://www.tiktok.com"
+                target="_blank">
+                TikTok Profile
+            </a>
+        </p>
+
+         <p>
+            <a href="https://www.youtube.com"
+            target="_blank">
+            YouTube Profile
+            </a>
+        </p>
+
+    <h3>Useful Links</h3>
+    <ul>
+    <li><a href="favourite.php">Favourite Recipes</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="contact.php">Contact Us</a></li>
+    </ul>
+
+    <h3>Group Information</h3>
+        <p>Joewiey Franzine Ibanez - K231663</p>
+        <p>Sheirina Glee Nadera - K240664</p>
+        <p>Regil Maharjan - K240722</p>
+        <p>Chauncey Ariel Nieto - K240938</p>
+        <p>Cassandra Noeribelle Dejucos - K240945</p>    
+
+    <p>This website was created for the final assessment for DWIN309 at Kent Institute Australia - Trimester 2, 2026</p>
+    <p>© CookBook 2026</p>
+
+    
 </footer>
-<!-- Footer -->
-<!-- end of footer -->
 
 </body>
 </html>
