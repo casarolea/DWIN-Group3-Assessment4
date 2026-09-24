@@ -22,25 +22,41 @@
 <!-- This is the start of the nav bar -->
  
 <!-- THIS IS THE START OF THE NAV BAR (MENU SECTION) -->
-<nav class="navbar navbar-expand-lg navbar-light first-block">
-  <a class="gochihand nav-name" href="index.php"><img class="logo" src="../images/cblogo1.png" alt="CookBook Logo" title="CookBook logo">CookBook</a>
+<nav class="navbar navbar-expand-lg navbar-light">
+  <!-- Logo -->
+  <a class="gochihand nav-name" href="index.php">
+    <img class="logo" src="../images/cblogo1.png" alt="CookBook Logo" title="CookBook logo">
+    CookBook
+  </a>
+
+  <!-- Button -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+      <!-- Left Side of Navbar -->
         <ul class="navbar-nav ralewayextrabold nav-text">
           <li class="nav-item">
-            <a class="nav-item nav-link nav-text4" href="#">RECIPES</a>
+            <a class="nav-link nav-text4" href="#">RECIPES</a>
           </li>
           <li class="nav-item">
-            <a class="nav-item nav-link nav-text4" href="#">COLLECTIONS</a>
+            <a class="nav-link nav-text4" href="#">COLLECTIONS</a>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn my-2 my-sm-0 navbar-search-btn" type="submit">Search</button>
-    </form>
+
+      <!-- Right Side of Navbar -->
+       <div class="ml-auto d-flex align-items-center">
+        <!-- For Search -->
+        <form class="form-inline">
+          <input class="form-control navbar-search" type="search" placeholder="SEARCH">
+        </form>
+        <!-- For Login -->
+        <a class="nav-link nav-text4 login-link" href="#">LOGIN</a>
+        <!-- For Register -->
+        <a class="register-button" href="#">REGISTER</a>
+      </div>
       </div>
 </nav>
 <!-- THIS IS THE END OF THE NAV BAR (MENU SECTION) -->
@@ -72,7 +88,7 @@
 <!-- start of footer -->
 
  <!-- Footer -->
-<footer class="text-center text-lg-start bg-body-tertiary text-muted footer">
+ <footer class="text-center text-lg-start bg-body-tertiary text-muted footer">
 
 <!-- Section: Links  -->
 <section class="">
@@ -83,7 +99,7 @@
       <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
         <!-- Content -->
         <h6 class="fw-bold mb-4">
-        <a class="fas fa-gem me-3 gochihand footer-text1" href="index.php"><img class="logo" src="../images/cblogo2.png" alt="CookBook Logo" title="CookBook logo">CookBook</a>
+        <a class="fas fa-gem me-3 ralewayextrabold footer-text1" href="index.php"><img class="logo" src="../images/cblogo2.png" alt="CookBook Logo" title="CookBook logo">CookBook</a>
         </h6>
         <p class="footer-text2 ralewaybold">
           Improve the cooking experience.
@@ -124,47 +140,35 @@
         <p>
           <a class="footer-links ralewaybold footer-text2">Joewiey Franzine Ibanez - K231663</a>
         </p>
-
-         <p>
-            <a href="https://www.facebook.com"
-            target="_blank">
-            Facebook Profile
-            </a>
-        </p>     
-
-            <p>
-                <a href="https://www.tiktok.com"
-                target="_blank">
-                TikTok Profile
-            </a>
+        <p>
+          <a class="footer-links ralewaybold footer-text2">Sheirina Glee Nadera - K240664</a>
         </p>
-
-         <p>
-            <a href="https://www.youtube.com"
-            target="_blank">
-            YouTube Profile
-            </a>
+        <p>
+          <a class="footer-links ralewaybold footer-text2">Regil Maharjan - K240722</a>
         </p>
+        <p>
+          <a class="footer-links ralewaybold footer-text2">Chauncey Ariel Nieto - K240938</a>
+        </p>
+        <p>
+          <a class="footer-links ralewaybold footer-text2">Cassandra Noeribelle Dejucos - K240945</a>
+        </p>
+      </div>
+      <!-- Grid column -->
+    </div>
+    <!-- Grid row -->
+  </div>
+</section>
+<!-- Section: Links  -->
 
-    <h3>Useful Links</h3>
-    <ul>
-    <li><a href="favourite.php">Favourite Recipes</a></li>
-    <li><a href="about.html">About Us</a></li>
-    <li><a href="contact.php">Contact Us</a></li>
-    </ul>
-
-    <h3>Group Information</h3>
-        <p>Joewiey Franzine Ibanez - K231663</p>
-        <p>Sheirina Glee Nadera - K240664</p>
-        <p>Regil Maharjan - K240722</p>
-        <p>Chauncey Ariel Nieto - K240938</p>
-        <p>Cassandra Noeribelle Dejucos - K240945</p>    
-
-    <p>This website was created for the final assessment for DWIN309 at Kent Institute Australia - Trimester 2, 2026</p>
-    <p>© CookBook 2026</p>
-
-    
+<!-- Copyright -->
+<div class="text-center p-4">
+<p class ="ralewaybold footer-text2">This website was created for the final assessment for DWIN309 at Kent Institute Australia - Trimester 2, 2026</p>
+  <p class ="ralewaybold footer-text2">&copy; CookBook 2026. All rights reserved.</p>
+</div>
+<!-- Copyright -->
 </footer>
-
+<!-- Footer -->
+<!-- end of footer -->
+ 
 </body>
 </html>
