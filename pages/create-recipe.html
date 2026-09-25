@@ -1,0 +1,376 @@
+<!--
+  Note: photos currently saves to browser localStorage only not yet connected to a
+  database or tied to user accounts. Photos aren't persisted (file name only);
+  real photo storage needs a backend
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- css -->
+      <link rel="stylesheet" href="../styles/styles.css">
+    <!-- end of css -->
+
+    <!-- meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- create recipe page css (after Bootstrap so it can override it) -->
+    <link rel="stylesheet" href="../styles/recipe-form.css">
+
+    <title>Create a Recipe | CookBook</title>
+    <link rel="icon" type="image/x-icon" href="../images/cblogo2.png">
+  </head>
+
+<body>
+
+<!-- THIS IS THE START OF THE NAV BAR (MENU SECTION) -->
+<nav class="navbar navbar-expand-lg navbar-light">
+  <a class="gochihand nav-name" href="index.php">
+    <img class="logo" src="../images/cblogo1.png" alt="CookBook Logo" title="CookBook logo">
+    CookBook
+  </a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav ralewayextrabold nav-text">
+      <li class="nav-item">
+        <a class="nav-link nav-text4" href="#">RECIPES</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link nav-text4" href="#">COLLECTIONS</a>
+      </li>
+    </ul>
+
+    <div class="ml-auto d-flex align-items-center">
+      <form class="form-inline">
+        <input class="form-control navbar-search" type="search" placeholder="SEARCH">
+      </form>
+      <a class="nav-link nav-text4 login-link" href="#">LOGIN</a>
+      <a class="register-button" href="#">REGISTER</a>
+    </div>
+  </div>
+</nav>
+<!-- THIS IS THE END OF THE NAV BAR (MENU SECTION) -->
+
+<!-- START OF CREATE RECIPE -->
+<section class="first-block">
+<main class="container recipe-page">
+  <h1 class="recipe-title gochihand text-center">Create a Recipe</h1>
+
+  <form id="recipe-form" novalidate>
+    <div class="recipe-summary-error" id="summary-error" hidden>
+      <strong>Please fix the following before saving:</strong>
+      <ul id="summary-error-list"></ul>
+    </div>
+    <div class="row">
+
+      <!-- Step 1 -->
+      <div class="col-lg-6 mb-4">
+        <section class="recipe-panel h-100">
+          <h2 class="recipe-panel-head ralewaybold">Step 1: Recipe Title &amp; Description</h2>
+          <div class="recipe-panel-body">
+            <label class="sr-only" for="title">Title</label>
+            <input id="title" name="title" type="text" class="form-control" placeholder="Title*" required>
+            <p class="recipe-error" id="title-error" hidden>Enter a title.</p>
+
+            <label class="sr-only" for="description">Short description</label>
+            <textarea id="description" name="description" rows="12" maxlength="300" class="form-control mt-3" placeholder="Add a short description"></textarea>
+            <p class="recipe-counter">
+              <span>Maximum 300 characters</span>
+              <span>Characters remaining: <b id="remaining">300</b></span>
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="col-lg-6 mb-4">
+        <section class="recipe-panel h-100">
+          <h2 class="recipe-panel-head ralewaybold">Step 2: Recipe Information</h2>
+          <div class="recipe-panel-body">
+            <div class="form-group">
+              <label for="category">Category *</label>
+              <select id="category" name="category" class="form-control" required>
+                <option value="">- Select a value -</option>
+                <option>Breakfast</option><option>Lunch</option><option>Dinner</option>
+                <option>Snacks</option><option>Dessert</option><option>Drinks</option>
+                <option>Baking</option><option>Sides</option>
+              </select>
+              <p class="recipe-error" id="category-error" hidden>Choose a category.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="cuisine">Cuisine</label>
+              <select id="cuisine" name="cuisine" class="form-control">
+                <option value="">- None -</option>
+                <option>Australian</option><option>Italian</option><option>Asian</option>
+                <option>Mexican</option><option>Indian</option><option>Mediterranean</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-sm-6">
+                <label for="difficulty">Difficulty</label>
+                <select id="difficulty" name="difficulty" class="form-control">
+                  <option value="">- None -</option>
+                  <option>Easy</option><option>Medium</option><option>Hard</option>
+                </select>
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="serves">Serves</label>
+                <select id="serves" name="serves" class="form-control">
+                  <option value="">- None -</option>
+                  <option>1</option><option>2</option><option>3</option><option>4</option>
+                  <option>5</option><option>6</option><option>8</option><option>10+</option>
+                </select>
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="prep">Prep Time</label>
+                <input id="prep" name="prep" type="text" class="form-control" placeholder="eg. 30 minutes">
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="marinate">Marinate</label>
+                <input id="marinate" name="marinate" type="text" class="form-control" placeholder="eg. 1 hour">
+              </div>
+              <div class="form-group col-sm-6 mb-0">
+                <label for="cook">Cook Time</label>
+                <input id="cook" name="cook" type="text" class="form-control" placeholder="eg. 1 hour">
+              </div>
+              <div class="form-group col-sm-6 mb-0">
+                <label for="makes">Makes</label>
+                <input id="makes" name="makes" type="text" class="form-control" placeholder="eg. 12 cupcakes">
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <section class="recipe-panel mb-4">
+      <h2 class="recipe-panel-head ralewaybold">Step 3: Recipe Ingredients, Method &amp; Tips</h2>
+      <div class="recipe-panel-body">
+        <div class="custom-control custom-radio mb-3">
+          <input type="radio" class="custom-control-input" id="type-single" name="recipeType" value="single" checked>
+          <label class="custom-control-label" for="type-single">
+            Single Part Recipe
+            <small class="d-block recipe-hint">eg. A recipe for Cake</small>
+          </label>
+        </div>
+        <div class="custom-control custom-radio mb-3">
+          <input type="radio" class="custom-control-input" id="type-multi" name="recipeType" value="multi">
+          <label class="custom-control-label" for="type-multi">
+            Multipart Recipe
+            <small class="d-block recipe-hint">eg. One recipe for Cake and one for Icing</small>
+          </label>
+        </div>
+
+        <div id="parts"></div>
+        <button type="button" class="btn btn-outline-recipe" id="add-part" hidden>+ Add another part</button>
+        <p class="recipe-error" id="parts-error" hidden>Add at least one ingredient and one method step to every part.</p>
+
+        <div class="form-group mt-4 mb-0">
+          <label for="tips">Tips</label>
+          <textarea id="tips" name="tips" rows="4" class="form-control" placeholder="Anything that helps the cook"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 4 -->
+    <section class="recipe-panel mb-4">
+      <h2 class="recipe-panel-head ralewaybold">Step 4: Nutritional Information (per serve)</h2>
+      <div class="recipe-panel-body">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="servingSize">Serving size</label>
+            <input id="servingSize" name="servingSize" type="text" class="form-control" placeholder="eg. 200g, 2 slices, etc.">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="energy">Energy</label>
+            <div class="input-group">
+              <input id="energy" name="energy" type="number" min="0" step="any" class="form-control">
+              <div class="input-group-append"><span class="input-group-text">kJ</span></div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="calories">Calories</label>
+            <div class="input-group">
+              <input id="calories" name="calories" type="number" min="0" step="any" class="form-control">
+              <div class="input-group-append"><span class="input-group-text">cal</span></div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="protein">Protein</label>
+            <div class="input-group">
+              <input id="protein" name="protein" type="number" min="0" step="any" class="form-control">
+              <div class="input-group-append"><span class="input-group-text">g</span></div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="fatTotal">Fat, Total</label>
+            <div class="input-group">
+              <input id="fatTotal" name="fatTotal" type="number" min="0" step="any" class="form-control">
+              <div class="input-group-append"><span class="input-group-text">g</span></div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="fatSaturated">Fat, Saturated</label>
+            <div class="input-group">
+              <input id="fatSaturated" name="fatSaturated" type="number" min="0" step="any" class="form-control">
+              <div class="input-group-append"><span class="input-group-text">g</span></div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="carbs">Carbohydrates</label>
+            <div class="input-group">
+              <input id="carbs" name="carbs" type="number" min="0" step="any" class="form-control">
+              <div class="input-group-append"><span class="input-group-text">g</span></div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="sugars">Sugars</label>
+            <div class="input-group">
+              <input id="sugars" name="sugars" type="number" min="0" step="any" class="form-control">
+              <div class="input-group-append"><span class="input-group-text">g</span></div>
+            </div>
+          </div>
+          <div class="form-group col-md-6 mb-0">
+            <label for="fibre">Dietary Fibre</label>
+            <div class="input-group">
+              <input id="fibre" name="fibre" type="number" min="0" step="any" class="form-control">
+              <div class="input-group-append"><span class="input-group-text">g</span></div>
+            </div>
+          </div>
+          <div class="form-group col-md-6 mb-0">
+            <label for="sodium">Sodium</label>
+            <div class="input-group">
+              <input id="sodium" name="sodium" type="number" min="0" step="any" class="form-control">
+              <div class="input-group-append"><span class="input-group-text">mg</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 5 -->
+    <section class="recipe-panel mb-4">
+      <h2 class="recipe-panel-head ralewaybold">Step 5: Recipe Photo</h2>
+      <div class="recipe-panel-body">
+        <p class="mb-2">Add your own image to your recipe.*</p>
+        <p>Images should be JPG/JPEG/PNG format and be between 2MB - 4MB to achieve quality results in your printed PDF cookbook.</p>
+
+        <div class="recipe-photo">
+          <div class="recipe-photo-pick">
+            <input type="file" id="photo" accept="image/jpeg,image/png,.jpg,.jpeg,.png" class="sr-only">
+            <label for="photo" class="btn btn-recipe btn-choose">CHOOSE FILE</label>
+            <span id="photo-name">No file chosen</span>
+          </div>
+          <button type="button" class="btn btn-recipe btn-block mt-3" id="upload-btn" disabled>Upload</button>
+          <p class="recipe-hint mt-3 mb-0" id="photo-msg" role="status">Images cannot exceed 4MB.</p>
+          <img id="photo-preview" class="recipe-photo-preview" alt="Preview of your recipe photo" hidden>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 6 -->
+    <div class="recipe-actions">
+      <p id="status" role="status"></p>
+      <button type="button" class="btn btn-outline-recipe" id="cancel-btn">Cancel</button>
+      <button type="submit" class="btn btn-recipe">Save recipe</button>
+    </div>
+  </form>
+
+  <!-- View my recipes -->
+  <section class="recipe-panel mt-5" id="my-recipes">
+    <h2 class="recipe-panel-head ralewaybold">My Recipes</h2>
+    <div class="recipe-panel-body">
+      <p class="recipe-hint mb-0" id="recipes-empty">You haven't created any recipes yet. Fill in the form above and click Save recipe to add your first one.</p>
+      <ul class="list-unstyled mb-0" id="recipes-list"></ul>
+    </div>
+  </section>
+</main>
+</section>
+<!-- END OF CREATE RECIPE -->
+
+<!-- Optional JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!-- Create recipe page script -->
+    <script src="../scripts/recipe-form.js"></script>
+
+<!-- start of footer -->
+ <footer class="text-center text-lg-start bg-body-tertiary text-muted footer">
+
+<section class="">
+  <div class="container text-center mt-5">
+    <div class="row mt-3">
+      <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+        <h6 class="fw-bold mb-4">
+        <a class="fas fa-gem me-3 gochihand footer-text1" href="index.php"><img class="logo" src="../images/cblogo2.png" alt="CookBook Logo" title="CookBook logo">CookBook</a>
+        </h6>
+        <p class="footer-text2 ralewaybold">
+          Improve the cooking experience.
+        </p>
+        <hr>
+        <p>
+          <a href="#" class="footer-links ralewaybold footer-text2">Instagram</a>
+          <a href="#" class="footer-links ralewaybold footer-text2">Facebook</a>
+          <a href="#" class="footer-links ralewaybold footer-text2">Tiktok</a>
+          <a href="#" class="footer-links ralewaybold footer-text2">YouTube</a>
+        </p>
+      </div>
+
+      <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+        <h6 class="text-uppercase ralewayextrabold footer-text1 mb-4">
+          Quick links
+        </h6>
+        <p>
+          <a href="index.php" class="footer-links ralewaybold">Home</a>
+        </p>
+        <p>
+          <a href="#" class="footer-links ralewaybold">Recipes</a>
+        </p>
+        <p>
+          <a href="#" class="footer-links ralewaybold">Favourites</a>
+        </p>
+      </div>
+
+      <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+        <h6 class="text-uppercase ralewayextrabold footer-text1 mb-4">GROUP INFORMATION</h6>
+        <p>
+          <a class="footer-links ralewaybold footer-text2">Joewiey Franzine Ibanez - K231663</a>
+        </p>
+        <p>
+          <a class="footer-links ralewaybold footer-text2">Sheirina Glee Nadera - K240664</a>
+        </p>
+        <p>
+          <a class="footer-links ralewaybold footer-text2">Regil Maharjan - K240722</a>
+        </p>
+        <p>
+          <a class="footer-links ralewaybold footer-text2">Chauncey Ariel Nieto - K240938</a>
+        </p>
+        <p>
+          <a class="footer-links ralewaybold footer-text2">Cassandra Noeribelle Dejucos - K240945</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="text-center p-4">
+<p class ="ralewaybold footer-text2">This website was created for the final assessment for DWIN309 at Kent Institute Australia - Trimester 2, 2026</p>
+  <p class ="ralewaybold footer-text2">&copy; CookBook 2026. All rights reserved.</p>
+</div>
+</footer>
+<!-- end of footer -->
+
+</body>
+</html>
