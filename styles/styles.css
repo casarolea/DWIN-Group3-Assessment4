@@ -127,6 +127,7 @@
 .second-block {
     background-color: #f8f6ee;
     padding: 50px 5%;
+    border-bottom: 25px solid #8f6956;
 }
 
 .third-block {
@@ -359,3 +360,73 @@ section.first-block .custom-jumbotron .custom-btn:hover {
 }
 /* ==== END ACCOUNT AND AUTHENTICATION PAGES ==== */
 
+/* ==== START OF DEVELOPER CARDS ==== */
+
+/* ==== MEET THE DEVELOPERS ==== */
+
+.developers-title {
+    color: #654c43;
+    font-family: 'RalewayEB', sans-serif;
+    font-size: 3rem;
+    margin-bottom: 70px;
+    text-shadow: 3px 3px 0 rgba(101, 76, 67, 0.2);
+}
+
+.developers-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px 30px;
+}
+
+.developer-card {
+    width: 30%;
+}
+
+.developer-button {
+    background-color: #f8f6ee;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 20px 30px rgba(101, 76, 67, 0.25);
+
+    color: #654c43;
+    cursor: pointer;
+
+    font-family: 'RalewayEB', sans-serif;
+    font-size: 1.5rem;
+
+    min-height: 110px;
+    padding: 25px;
+    width: 100%;
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.developer-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 35px rgba(101, 76, 67, 0.3);
+}
+
+.developer-button:focus {
+    outline: none;
+}
+
+.contribution-box {
+    width: 100%;
+}
+
+.contribution-content {
+    background-color: #eaddd3;
+    border-radius: 0 0 15px 15px;
+    color: #654c43;
+    font-family: 'RalewayB', sans-serif;
+    margin-top: 10px;
+    padding: 25px;
+}
+
+.contribution-content h4 {
+    font-family: 'RalewayEB', sans-serif;
+    margin-bottom: 15px;
+}
+
+/* ==== END OF DEVELOPER CARDS ==== */
