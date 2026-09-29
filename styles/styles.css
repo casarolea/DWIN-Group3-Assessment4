@@ -3,20 +3,25 @@
     font-family: 'RalewayEB';
     src: url(../fonts/raleway-extrabold.ttf);
 }
+
 @font-face {
     font-family: 'RalewayB';
     src: url(../fonts/raleway-bold.ttf);
 }
+
 @font-face {
     font-family: 'GochiHand';
     src: url(../fonts/GochiHand-Regular.ttf);
 }
+
 .ralewayextrabold {
     font-family: 'RalewayEB';
 }
+
 .ralewaybold {
     font-family: 'RalewayB';
 }
+
 .gochihand {
     font-family: 'GochiHand';
 }
@@ -28,38 +33,47 @@
     height: auto;
     margin-right: 8px;
 }
+
 .navbar {
     background-color: #f8f6ee;
     padding: 10px 5%;
 }
+
 .nav-name {
     color: #654c43 !important;
     font-size: 30px;
     margin-right: 40px;
 }
+
 .nav-text1 {
     color: #f8f6ee !important;
     font-size: 20px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
+
 .nav-text2 {
     color: #654c43 !important;
     font-size: 20px;
 }
+
 .nav-text3 {
     color: #f8f6ee !important;
     font-size: 20px;
 }
+
 .nav-text4 {
     color: #8f6956 !important;
     font-size: 20px;
 }
+
 .navbar-brand {
     margin-right: 40px;
 }
+
 .nav-link {
     margin-right: 20px;
 }
+
 .navbar-search {
     width: 400px;
     height: 55px;
@@ -69,10 +83,12 @@
     font-size: 20px;
     text-align: center;
 }
+
 .navbar-search::placeholder {
     color: #8f6956;
     opacity: 1;
 }
+
 .login-link {
     margin-left: 35px;
     margin-right: 25px;
@@ -80,6 +96,7 @@
     font-family: 'RalewayEB';
     font-size: 20px;
 }
+
 .register-button {
     background-color: #8f6956;
     color: #f8f6ee !important;
@@ -90,6 +107,7 @@
     border-radius: 6px;
     text-decoration: none;
 }
+
 .register-button:hover {
     color: #f8f6ee !important;
     background-color: #654c43;
@@ -102,10 +120,13 @@
     background-color: #f8f6ee;
     padding: 50px 5%;
 }
+
 .second-block {
     background-color: #f8f6ee;
     padding: 50px 5%;
+    border-bottom: 25px solid #8f6956;
 }
+
 .third-block {
     background-color: #f8f6ee;
     padding: 50px 5%;
@@ -117,17 +138,21 @@
     background-color: #8f6956;
     padding: 50px 5%;
 }
+
 .footer-text1 {
     color: #f8f6ee !important;
 }
+
 .footer-text2 {
     color: #f8f6ee !important;
     font-size: 13px;
 }
+
 .footer-links {
     color: #e5efe7;
     text-decoration: none;
 }
+
 .footer-links:hover {
     color: #e5efe7;
     text-decoration: underline;
@@ -140,9 +165,11 @@ section.first-block .jumbotron.custom-jumbotron {
     padding: 3rem 2rem !important;
     border-radius: 15px !important;
 }
+
 section.first-block .custom-jumbotron .text-side {
     padding-left: 3rem !important;
 }
+
 section.first-block .custom-jumbotron .homepage-title {
     color: #654c43 !important;
     font-family: 'RalewayEB', sans-serif !important;
@@ -150,15 +177,18 @@ section.first-block .custom-jumbotron .homepage-title {
     font-weight: 800 !important;
     line-height: 1.15;
 }
+
 section.first-block .custom-jumbotron .title-divider {
     border-top: 2px solid #654c43 !important;
     opacity: 1 !important;
     margin: 20px 0 !important;
 }
+
 section.first-block .custom-jumbotron .subtitle-text {
     color: #654c43 !important;
     font-size: 1.1rem !important;
 }
+
 section.first-block .custom-jumbotron .custom-btn {
     color: #654c43 !important;
     background-color: transparent !important;
@@ -168,6 +198,7 @@ section.first-block .custom-jumbotron .custom-btn {
     font-weight: 600 !important;
     display: inline-block;
 }
+
 section.first-block .custom-jumbotron .custom-btn:hover {
     color: #eaddd3 !important;
     background-color: #654c43 !important;
@@ -180,11 +211,13 @@ body.recipe-detail-page {
     background-color: #f8f6ee !important;
     color: #654c43;
 }
+
 .recipe-detail-container {
     max-width: 1400px;
     padding-top: 20px;
     padding-bottom: 60px;
 }
+
 .recipe-detail-page main > .btn-outline-secondary {
     color: #654c43 !important;
     background-color: transparent !important;
@@ -193,11 +226,13 @@ body.recipe-detail-page {
     padding: 8px 22px;
     font-weight: 600;
 }
+
 .recipe-detail-page main > .btn-outline-secondary:hover {
     color: #f8f6ee !important;
     background-color: #654c43 !important;
     border-color: #654c43 !important;
 }
+
 .recipe-detail-card {
     background-color: #eaddd3 !important;
     border: none !important;
@@ -205,12 +240,15 @@ body.recipe-detail-page {
     overflow: hidden;
     box-shadow: none !important;
 }
+
 .recipe-detail-card .row {
     margin: 0;
 }
+
 .recipe-detail-card .row > div {
     padding: 0 !important;
 }
+
 .recipe-detail-card img.card-img-top {
     display: block;
     width: 100%;
@@ -219,17 +257,20 @@ body.recipe-detail-page {
     object-fit: cover;
     border-radius: 0;
 }
+
 .recipe-detail-card video {
     display: block;
     width: 100%;
     height: 480px;
     object-fit: cover;
 }
+
 .recipe-detail-body {
     background-color: #eaddd3 !important;
     color: #654c43;
     padding: 40px 50px !important;
 }
+
 .recipe-detail-body .card-title {
     color: #654c43 !important;
     font-family: 'RalewayEB', sans-serif;
@@ -237,6 +278,7 @@ body.recipe-detail-page {
     font-weight: 800;
     margin-bottom: 15px;
 }
+
 .recipe-detail-body h3 {
     color: #654c43 !important;
     font-family: 'RalewayEB', sans-serif;
@@ -244,23 +286,28 @@ body.recipe-detail-page {
     font-weight: 800;
     margin-bottom: 18px;
 }
+
 .recipe-detail-body h4 {
     color: #654c43 !important;
     font-family: 'RalewayEB', sans-serif;
     font-weight: 800;
 }
+
 .recipe-detail-body p {
     color: #654c43;
 }
+
 .recipe-detail-body .text-muted {
     color: #8f6956 !important;
 }
+
 .recipe-detail-body hr {
     border: 0;
     border-top: 2px solid #654c43;
     opacity: 1;
     margin: 30px 0;
 }
+
 .recipe-detail-body .btn-outline-secondary,
 .recipe-detail-body .btn-outline-danger {
     color: #654c43 !important;
@@ -270,12 +317,14 @@ body.recipe-detail-page {
     padding: 8px 22px;
     font-weight: 600;
 }
+
 .recipe-detail-body .btn-outline-secondary:hover,
 .recipe-detail-body .btn-outline-danger:hover {
     color: #f8f6ee !important;
     background-color: #654c43 !important;
     border-color: #654c43 !important;
 }
+
 .recipe-detail-body .btn-outline-primary {
     color: #654c43 !important;
     background-color: transparent !important;
@@ -284,11 +333,13 @@ body.recipe-detail-page {
     padding: 8px 22px;
     font-weight: 600;
 }
+
 .recipe-detail-body .btn-outline-primary:hover {
     color: #f8f6ee !important;
     background-color: #654c43 !important;
     border-color: #654c43 !important;
 }
+
 .recipe-detail-body .btn-danger,
 .recipe-detail-body .btn-primary {
     color: #f8f6ee !important;
@@ -298,12 +349,14 @@ body.recipe-detail-page {
     padding: 8px 22px;
     font-weight: 600;
 }
+
 .recipe-detail-body .btn-danger:hover,
 .recipe-detail-body .btn-primary:hover {
     color: #f8f6ee !important;
     background-color: #654c43 !important;
     border-color: #654c43 !important;
 }
+
 .recipe-detail-body .btn-link {
     color: #d6a600 !important;
     background-color: transparent !important;
@@ -311,6 +364,7 @@ body.recipe-detail-page {
     box-shadow: none !important;
     text-decoration: none !important;
 }
+
 .recipe-detail-body textarea.form-control {
     width: 100%;
     background-color: #f8f6ee;
@@ -319,21 +373,25 @@ body.recipe-detail-page {
     border-radius: 10px;
     padding: 15px;
 }
+
 .recipe-detail-body textarea.form-control::placeholder {
     color: #8f6956;
     opacity: 1;
 }
+
 .recipe-detail-body textarea.form-control:focus {
     background-color: #ffffff;
     color: #654c43;
     border-color: #654c43;
     box-shadow: 0 0 0 0.2rem rgba(101, 76, 67, 0.15);
 }
+
 .recipe-detail-body .border {
     background-color: #f8f6ee;
     border: 1px solid #8f6956 !important;
     border-radius: 10px !important;
 }
+
 #copyMessage {
     color: #654c43 !important;
     font-weight: bold;
@@ -346,47 +404,59 @@ body.recipe-detail-page {
         width: 100%;
         margin-top: 15px;
     }
+
     .login-link {
         margin-left: 0;
         margin-right: 15px;
     }
+
     .recipe-detail-container {
         padding-left: 20px;
         padding-right: 20px;
     }
 }
+
 @media (max-width: 768px) {
     section.first-block .custom-jumbotron .text-side {
         padding-left: 0 !important;
         padding-top: 30px;
     }
+
     section.first-block .custom-jumbotron .homepage-title {
         font-size: 2.3rem !important;
     }
+
     .recipe-detail-container {
         padding-left: 15px;
         padding-right: 15px;
     }
+
     .recipe-detail-body {
         padding: 25px !important;
     }
+
     .recipe-detail-body .card-title {
         font-size: 30px;
     }
+
     .recipe-detail-body h3 {
         font-size: 23px;
     }
+
     .recipe-detail-card img.card-img-top,
     .recipe-detail-card video {
         height: 300px;
     }
+
     .navbar-search {
         height: 45px;
         font-size: 16px;
     }
+
     .nav-name {
         font-size: 25px;
     }
+
     .logo {
         width: 65px;
     }
@@ -401,31 +471,37 @@ body.recipe-detail-page {
     font-family: 'RalewayB', sans-serif;
     padding: 2.5rem;
 }
+
 .auth-page-title,
 .account-page h1,
 .account-page h2 {
     color: #654c43;
     font-family: 'RalewayEB', sans-serif;
 }
+
 .account-page {
     color: #654c43;
     font-family: 'RalewayB', sans-serif;
 }
+
 .auth-panel label,
 .account-page label {
     color: #654c43;
     font-family: 'RalewayB', sans-serif;
 }
+
 .auth-panel .form-control,
 .account-page .form-control {
     border: 2px solid #8f6956;
     border-radius: 6px;
 }
+
 .auth-panel .form-control:focus,
 .account-page .form-control:focus {
     border-color: #654c43;
     box-shadow: 0 0 0 0.2rem rgba(143, 105, 86, 0.2);
 }
+
 .cookbook-button,
 .account-page .btn-primary {
     background-color: #8f6956;
@@ -433,59 +509,72 @@ body.recipe-detail-page {
     color: #f8f6ee;
     font-family: 'RalewayEB', sans-serif;
 }
+
 .cookbook-button:hover,
 .account-page .btn-primary:hover {
     background-color: #654c43;
     border-color: #654c43;
     color: #f8f6ee;
 }
+
 .cookbook-link {
     color: #8f6956;
     font-family: 'RalewayB', sans-serif;
 }
+
 .cookbook-link:hover {
     color: #654c43;
 }
+
 .account-page .nav-pills .nav-link {
     border-radius: 6px;
     color: #654c43;
     font-family: 'RalewayB', sans-serif;
     margin-bottom: 4px;
 }
+
 .account-page .nav-pills .nav-link.active {
     background-color: #8f6956;
     color: #f8f6ee;
 }
+
 .account-page .tab-content {
     background-color: #eaddd3 !important;
     border: 0 !important;
     border-radius: 15px !important;
     box-shadow: 0 8px 20px rgba(101, 76, 67, 0.08);
 }
+
 .account-page .btn-outline-secondary {
     border-color: #8f6956;
     color: #654c43;
 }
+
 .account-page .btn-outline-secondary:hover {
     background-color: #8f6956;
     color: #f8f6ee;
 }
+
 .account-page .btn-outline-primary {
     border-color: #8f6956;
     color: #8f6956;
 }
+
 .account-page .btn-outline-primary:hover {
     background-color: #8f6956;
     color: #f8f6ee;
 }
+
 .account-page .profile-photo {
     border: 3px solid #eaddd3;
 }
+
 .account-profile-summary {
     align-items: center;
     display: flex;
     gap: 1.25rem;
 }
+
 .account-avatar {
     border: 3px solid #f8f6ee;
     border-radius: 50%;
@@ -494,6 +583,7 @@ body.recipe-detail-page {
     object-fit: cover;
     width: 112px;
 }
+
 .account-avatar-placeholder {
     align-items: center;
     background-color: #8f6956;
@@ -503,6 +593,7 @@ body.recipe-detail-page {
     font-size: 40px;
     justify-content: center;
 }
+
 @media (max-width: 480px) {
     .account-profile-summary {
         align-items: flex-start;
@@ -654,3 +745,66 @@ body.recipe-detail-page {
     }
 }
 /* ==== END OF ADMIN DASHBOARD ==== */
+
+/* ==== START OF DEVELOPER CARDS ==== */
+.developers-title {
+    color: #654c43;
+    font-family: 'RalewayEB', sans-serif;
+    font-size: 3rem;
+    margin-bottom: 70px;
+    text-shadow: 3px 3px 0 rgba(101, 76, 67, 0.2);
+}
+
+.developers-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px 30px;
+}
+
+.developer-card {
+    width: 30%;
+}
+
+.developer-button {
+    background-color: #f8f6ee;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 20px 30px rgba(101, 76, 67, 0.25);
+    color: #654c43;
+    cursor: pointer;
+    font-family: 'RalewayEB', sans-serif;
+    font-size: 1.5rem;
+    min-height: 110px;
+    padding: 25px;
+    width: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.developer-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 35px rgba(101, 76, 67, 0.3);
+}
+
+.developer-button:focus {
+    outline: none;
+}
+
+.contribution-box {
+    width: 100%;
+}
+
+.contribution-content {
+    background-color: #eaddd3;
+    border-radius: 0 0 15px 15px;
+    color: #654c43;
+    font-family: 'RalewayB', sans-serif;
+    margin-top: 10px;
+    padding: 25px;
+}
+
+.contribution-content h4 {
+    font-family: 'RalewayEB', sans-serif;
+    margin-bottom: 15px;
+}
+/* ==== END OF DEVELOPER CARDS ==== */

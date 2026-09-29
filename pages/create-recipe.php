@@ -149,9 +149,8 @@ $recentRecipes = $recentStatement->fetchAll();
 function h($s) { return htmlspecialchars($s ?? '', ENT_QUOTES, 'UTF-8'); }
 ?>
 
+<!-- header -->
 <?php
-require_once __DIR__ . '/../includes/auth.php';
-
 $page_title = "Create a Recipe";
 $extra_css = ["../styles/recipe-form.css"];
 $extra_js = ["../scripts/recipe-form.js"];
