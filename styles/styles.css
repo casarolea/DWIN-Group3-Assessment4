@@ -510,3 +510,147 @@ body.recipe-detail-page {
     }
 }
 /* ==== END ACCOUNT AND AUTHENTICATION PAGES ==== */
+
+/* ==== START OF ADMIN DASHBOARD ==== */
+.admin-dashboard {
+    background-color: #f8f6ee;
+    min-height: 100vh;
+    padding: 60px 0;
+}
+
+.admin-title {
+    font-family: 'RalewayEB';
+    color: #654c43;
+    font-size: 45px;
+    margin-bottom: 5px;
+}
+
+.admin-subtitle {
+    font-family: 'RalewayB';
+    color: #8f6956;
+    font-size: 18px;
+}
+
+.admin-stat-card {
+    background-color: #eaddd3;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(101, 76, 67, 0.12);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(101, 76, 67, 0.18);
+}
+
+.admin-stat-card .card-body {
+    padding: 30px;
+}
+
+.admin-stat-number {
+    font-family: 'RalewayEB';
+    color: #654c43;
+    font-size: 42px;
+    margin-bottom: 5px;
+}
+
+.admin-stat-text {
+    font-family: 'RalewayB';
+    color: #8f6956;
+    font-size: 17px;
+}
+
+.admin-section-card {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(101, 76, 67, 0.08);
+}
+
+.admin-section-card .card-body {
+    padding: 30px;
+}
+
+.admin-section-title {
+    font-family: 'RalewayEB';
+    color: #654c43;
+    font-size: 28px;
+    margin-bottom: 25px;
+}
+
+.admin-main-btn {
+    background-color: #8f6956;
+    border: 2px solid #8f6956;
+    color: #f8f6ee !important;
+    font-family: 'RalewayB';
+    border-radius: 25px;
+    padding: 10px 25px;
+}
+
+.admin-main-btn:hover,
+.admin-main-btn:focus {
+    background-color: #654c43;
+    border-color: #654c43;
+    color: #f8f6ee !important;
+    text-decoration: none;
+}
+
+.admin-table {
+    margin-bottom: 0;
+}
+
+.admin-table thead th {
+    background-color: #8f6956;
+    color: #f8f6ee;
+    font-family: 'RalewayB';
+    border: none;
+    padding: 15px;
+}
+
+.admin-table tbody td {
+    color: #654c43;
+    padding: 15px;
+    vertical-align: middle;
+    border-color: #eaddd3;
+}
+
+.admin-table tbody tr:hover {
+    background-color: #f8f6ee;
+}
+
+.admin-view-btn {
+    background-color: transparent;
+    border: 2px solid #8f6956;
+    color: #654c43 !important;
+    font-family: 'RalewayB';
+    border-radius: 20px;
+    padding: 6px 16px;
+}
+
+.admin-view-btn:hover,
+.admin-view-btn:focus {
+    background-color: #8f6956;
+    border-color: #8f6956;
+    color: #ffffff !important;
+}
+
+.admin-empty-message {
+    font-family: 'RalewayB';
+    color: #8f6956;
+}
+
+@media (max-width: 767px) {
+    .admin-dashboard {
+        padding: 40px 0;
+    }
+
+    .admin-title {
+        font-size: 34px;
+    }
+
+    .admin-section-card .card-body {
+        padding: 20px;
+    }
+}
+/* ==== END OF ADMIN DASHBOARD ==== */
