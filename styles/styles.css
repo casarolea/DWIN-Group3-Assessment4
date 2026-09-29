@@ -212,6 +212,10 @@ body.recipe-detail-page {
     color: #654c43;
 }
 
+body.recipe-detail-page main {
+    background-color: #f8f6ee !important;
+}
+
 .recipe-detail-container {
     max-width: 1400px;
     padding-top: 20px;

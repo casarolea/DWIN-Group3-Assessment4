@@ -96,17 +96,17 @@ $page_title = isset($page_title) ? $page_title: 'CookBook';
 <html lang="en">
 <head>
       
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 
-      <!-- local css -->
-      <link rel="stylesheet" href="../styles/recipe_page.css">
-    <!-- end of local csss -->
+       <!-- local css -->
+        <link rel="stylesheet" href="../styles/recipe_page.css">
+      <!-- end of local csss -->
 
     <title>CookBook</title>
     <link rel="icon" type="image/x-icon" href="../images/cblogo2.png">
