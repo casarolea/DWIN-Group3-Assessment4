@@ -61,6 +61,42 @@ function cookbook_db(): PDO
             CONSTRAINT fk_recipe_media_recipe FOREIGN KEY (recipe_id)
                 REFERENCES recipes(recipe_id) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+        $pdo->exec("CREATE TABLE IF NOT EXISTS favorites (
+            favorite_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            user_id INT UNSIGNED NOT NULL,
+            recipe_id INT NOT NULL,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE KEY uq_favorites_user_recipe (user_id, recipe_id),
+            CONSTRAINT fk_favorites_user FOREIGN KEY (user_id)
+                REFERENCES users(user_id) ON DELETE CASCADE,
+            CONSTRAINT fk_favorites_recipe FOREIGN KEY (recipe_id)
+                REFERENCES recipes(recipe_id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+        $pdo->exec("CREATE TABLE IF NOT EXISTS recipe_ratings (
+            rating_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            user_id INT UNSIGNED NOT NULL,
+            recipe_id INT NOT NULL,
+            rating TINYINT UNSIGNED NOT NULL,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            UNIQUE KEY uq_recipe_ratings_user_recipe (user_id, recipe_id),
+            CONSTRAINT fk_recipe_ratings_user FOREIGN KEY (user_id)
+                REFERENCES users(user_id) ON DELETE CASCADE,
+            CONSTRAINT fk_recipe_ratings_recipe FOREIGN KEY (recipe_id)
+                REFERENCES recipes(recipe_id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+        $pdo->exec("CREATE TABLE IF NOT EXISTS recipe_comments (
+            comment_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            user_id INT UNSIGNED NOT NULL,
+            recipe_id INT NOT NULL,
+            comment_text TEXT NOT NULL,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            INDEX idx_recipe_comments_recipe (recipe_id),
+            CONSTRAINT fk_recipe_comments_user FOREIGN KEY (user_id)
+                REFERENCES users(user_id) ON DELETE CASCADE,
+            CONSTRAINT fk_recipe_comments_recipe FOREIGN KEY (recipe_id)
+                REFERENCES recipes(recipe_id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
     }
 
     return $pdo;
