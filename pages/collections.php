@@ -194,8 +194,8 @@ $pagedCollections = array_slice($collections, $offset, $perPage);
                                     <?php echo (int)$collection['recipe_count']; ?> 
                                     <?php echo (int)$collection['recipe_count'] === 1 ? 'recipe' : 'recipes'; ?>
                                 </span>
-                                <a href="collection-details.php?id=<?php echo (int)$collection['id']; ?>" class="btn btn-sm btn-outline-primary">
-                                    View Collection
+                                <a href="recipe_page.php?category=<?php echo rawurlencode($collection['name']); ?>" class="btn btn-sm btn-outline-primary">
+                                  Browse Recipes
                                 </a>
                             </div>
                         </div>

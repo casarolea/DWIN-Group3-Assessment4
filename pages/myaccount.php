@@ -3,9 +3,17 @@ require_once __DIR__ . '/../includes/auth.php';
 cookbook_require_login();
 $pdo = cookbook_db();
 $accountUser = cookbook_current_user();
-$accountStatement = $pdo->prepare('SELECT username, email, profile_photo, password_hash FROM users WHERE user_id = ?');
+$accountStatement = $pdo->prepare('SELECT username, email, full_name, location, profile_photo, password_hash FROM users WHERE user_id = ?');
 $accountStatement->execute([$accountUser['id']]);
 $accountDetails = $accountStatement->fetch();
+$profilePhotoUrl = null;
+if (
+  !empty($accountDetails['profile_photo'])
+  && str_starts_with($accountDetails['profile_photo'], 'profiles/')
+  && is_file(__DIR__ . '/../images/' . $accountDetails['profile_photo'])
+) {
+  $profilePhotoUrl = '../images/profiles/' . rawurlencode(basename($accountDetails['profile_photo']));
+}
 $accountError = '';
 $activeTab = $_GET['tab'] ?? '';
 
@@ -16,6 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   } elseif (($_POST['action'] ?? '') === 'update_profile') {
     $username = trim($_POST['username'] ?? '');
     $email = strtolower(trim($_POST['email'] ?? ''));
+    $fullName = trim($_POST['full_name'] ?? '');
+    $location = trim($_POST['location'] ?? '');
     $profilePhoto = $accountDetails['profile_photo'];
     $newPhotoPath = null;
 
@@ -23,6 +33,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $accountError = 'Enter a username of up to 80 characters.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
       $accountError = 'Enter a valid email address.';
+    } elseif (strlen($fullName) > 120) {
+      $accountError = 'Enter a name of up to 120 characters.';
+    } elseif (strlen($location) > 120) {
+      $accountError = 'Enter a location of up to 120 characters.';
     } elseif (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] !== UPLOAD_ERR_NO_FILE) {
       $upload = $_FILES['profile_photo'];
       if ($upload['error'] !== UPLOAD_ERR_OK || $upload['size'] > 4 * 1024 * 1024) {
@@ -51,8 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($accountError === '') {
       try {
-        $update = $pdo->prepare('UPDATE users SET username = ?, email = ?, profile_photo = ? WHERE user_id = ?');
-        $update->execute([$username, $email, $profilePhoto, $accountUser['id']]);
+        $update = $pdo->prepare('UPDATE users SET username = ?, email = ?, full_name = ?, location = ?, profile_photo = ? WHERE user_id = ?');
+        $update->execute([$username, $email, $fullName, $location, $profilePhoto, $accountUser['id']]);
         $_SESSION['user']['username'] = $username;
         $_SESSION['user']['email'] = $email;
         if ($newPhotoPath && $accountDetails['profile_photo'] && str_starts_with($accountDetails['profile_photo'], 'profiles/')) {
@@ -68,6 +82,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
       }
     }
+     } elseif (($_POST['action'] ?? '') === 'delete_profile_photo') {
+    if (!empty($accountDetails['profile_photo']) && str_starts_with($accountDetails['profile_photo'], 'profiles/')) {
+      $photoFile = __DIR__ . '/../images/' . $accountDetails['profile_photo'];
+      if (is_file($photoFile)) {
+        @unlink($photoFile);
+      }
+    }
+    $update = $pdo->prepare('UPDATE users SET profile_photo = NULL WHERE user_id = ?');
+    $update->execute([$accountUser['id']]);
+    header('Location: myaccount.php?tab=profile&status=photo-deleted');
+    exit;
   } elseif (($_POST['action'] ?? '') === 'change_password') {
     $newPassword = $_POST['new_password'] ?? '';
     if (!password_verify($_POST['current_password'] ?? '', $accountDetails['password_hash'])) {
@@ -124,79 +149,72 @@ $accountRecipes = $recipeStatement->fetchAll();
 <!-- This is the start of the nav bar -->
  
 <!-- THIS IS THE START OF THE NAV BAR (MENU SECTION) -->
-<nav class="navbar navbar-expand-lg navbar-light">
-  <!-- Logo -->
-  <a class="gochihand nav-name" href="index.php">
-    <img class="logo" src="../images/cblogo1.png" alt="CookBook Logo" title="CookBook logo">
-    CookBook
-  </a>
-
-  <!-- Button -->
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-      <!-- Left Side of Navbar -->
-        <ul class="navbar-nav ralewayextrabold nav-text">
-          <li class="nav-item">
-            <a class="nav-link nav-text4" href="recipes.php">RECIPES</a>
-          </li>
-        </ul>
-
-      <!-- Right Side of Navbar -->
-       <div class="ml-auto d-flex align-items-center">
-        <!-- For Search -->
-        <form class="form-inline">
-          <input class="form-control navbar-search" type="search" placeholder="SEARCH">
-        </form>
-        <!-- For Login -->
-        <a class="nav-link nav-text4 login-link" href="myaccount.php">ACCOUNT</a>
-        <form class="form-inline" method="post" action="logout.php">
-          <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(cookbook_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
-          <button class="register-button" type="submit">LOG OUT</button>
-        </form>
-      </div>
-      </div>
-</nav>
+<?php include __DIR__ . '/../includes/site_navbar.php'; ?>
 <!-- THIS IS THE END OF THE NAV BAR (MENU SECTION) -->
 
 <!-- This is the start of the first-block -->
 <section class = "first-block">
 
+<main class="container my-5 account-page">
+<div class="row">
+<div class="col-lg-3 mb-4">
 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
   <a class="nav-link <?php echo $activeTab === '' ? 'active' : ''; ?>" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="<?php echo $activeTab === '' ? 'true' : 'false'; ?>">My Account</a>
   <a class="nav-link <?php echo $activeTab === 'profile' ? 'active' : ''; ?>" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="<?php echo $activeTab === 'profile' ? 'true' : 'false'; ?>">My Profile</a>
   <a class="nav-link <?php echo $activeTab === 'recipes' ? 'active' : ''; ?>" id="v-pills-recipes-tab" data-toggle="pill" href="#v-pills-recipes" role="tab" aria-controls="v-pills-recipes" aria-selected="<?php echo $activeTab === 'recipes' ? 'true' : 'false'; ?>">My Recipes</a>
   <a class="nav-link <?php echo $activeTab === 'collections' ? 'active' : ''; ?>" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="<?php echo $activeTab === 'collections' ? 'true' : 'false'; ?>">Collections</a>
-  <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Sign Out</a>
 </div>
-<div class="tab-content" id="v-pills-tabContent">
+</div>
+<div class="col-lg-9">
+<div class="tab-content p-4 h-100" id="v-pills-tabContent">
   <div class="tab-pane fade <?php echo $activeTab === '' ? 'show active' : ''; ?>" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-    <h1>Welcome, <?php echo htmlspecialchars($accountUser['username'], ENT_QUOTES, 'UTF-8'); ?></h1>
-    <p>Access level: <?php echo htmlspecialchars(ucfirst($accountUser['role']), ENT_QUOTES, 'UTF-8'); ?></p>
+    <div class="account-profile-summary">
+      <?php if ($profilePhotoUrl): ?>
+        <img class="account-avatar" src="<?php echo htmlspecialchars($profilePhotoUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($accountUser['username'], ENT_QUOTES, 'UTF-8'); ?> profile picture">
+      <?php else: ?>
+        <div class="account-avatar account-avatar-placeholder" aria-hidden="true"><?php echo htmlspecialchars(strtoupper(substr($accountUser['username'], 0, 1)), ENT_QUOTES, 'UTF-8'); ?></div>
+      <?php endif; ?>
+      <div>
+        <h1>Welcome, <?php echo htmlspecialchars($accountUser['username'], ENT_QUOTES, 'UTF-8'); ?></h1>
+        <p>Access level: <?php echo htmlspecialchars(ucfirst($accountUser['role']), ENT_QUOTES, 'UTF-8'); ?></p>
+        <a class="cookbook-link" href="myaccount.php?tab=profile">Edit profile</a>
+      </div>
+    </div>
   </div>
   <div class="tab-pane fade <?php echo $activeTab === 'profile' ? 'show active' : ''; ?>" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
     <?php if ($accountError !== ''): ?>
-      <div class="alert alert-danger" role="alert"><?php echo htmlspecialchars($accountError, ENT_QUOTES, 'UTF-8'); ?></div>
+      <div class="alert alert-danger" role="alert">
+        <?php echo htmlspecialchars($accountError, ENT_QUOTES, 'UTF-8'); ?>
+      </div>
     <?php elseif (($_GET['status'] ?? '') === 'profile-updated'): ?>
       <div class="alert alert-success" role="status">Profile updated.</div>
     <?php elseif (($_GET['status'] ?? '') === 'password-updated'): ?>
       <div class="alert alert-success" role="status">Password changed.</div>
+    <?php elseif (($_GET['status'] ?? '') === 'photo-deleted'): ?>
+      <div class="alert alert-success" role="status">Profile picture deleted.</div>
     <?php endif; ?>
-    <?php if ($accountDetails['profile_photo']): ?>
-      <img src="<?php echo htmlspecialchars('../images/' . $accountDetails['profile_photo'], ENT_QUOTES, 'UTF-8'); ?>" alt="Profile photo" width="120" height="120" style="object-fit: cover; border-radius: 50%;">
+    <?php if ($profilePhotoUrl): ?>
+      <img class="profile-photo" src="<?php echo htmlspecialchars($profilePhotoUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="Profile photo" width="120" height="120" style="object-fit: cover; border-radius: 50%;">
     <?php endif; ?>
+    
     <h2>Edit profile</h2>
     <form method="post" action="myaccount.php" enctype="multipart/form-data" class="mb-4">
       <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(cookbook_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
       <input type="hidden" name="action" value="update_profile">
       <div class="form-group"><label for="username">Username</label><input id="username" name="username" class="form-control" maxlength="80" required value="<?php echo htmlspecialchars($_POST['username'] ?? $accountDetails['username'], ENT_QUOTES, 'UTF-8'); ?>"></div>
       <div class="form-group"><label for="email">Email</label><input id="email" name="email" type="email" class="form-control" required value="<?php echo htmlspecialchars($_POST['email'] ?? $accountDetails['email'], ENT_QUOTES, 'UTF-8'); ?>"></div>
+      <div class="form-group"><label for="full_name">Name</label><input id="full_name" name="full_name" class="form-control" maxlength="120" value="<?php echo htmlspecialchars($_POST['full_name'] ?? ($accountDetails['full_name'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>"></div>
+      <div class="form-group"><label for="location">Location</label><input id="location" name="location" class="form-control" maxlength="120" placeholder="e.g. Sydney, Australia" value="<?php echo htmlspecialchars($_POST['location'] ?? ($accountDetails['location'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>"></div>
       <div class="form-group"><label for="profile_photo">Profile photo</label><input id="profile_photo" name="profile_photo" type="file" class="form-control-file" accept="image/jpeg,image/png,image/webp"><small class="form-text text-muted">JPG, PNG, or WebP; maximum 4MB.</small></div>
       <button type="submit" class="btn btn-primary">Save profile</button>
     </form>
+    <?php if ($profilePhotoUrl): ?>
+      <form method="post" action="myaccount.php" class="mb-4" onsubmit="return confirm('Delete your profile picture?');">
+        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(cookbook_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+        <input type="hidden" name="action" value="delete_profile_photo">
+        <button type="submit" class="btn btn-outline-danger">Delete profile picture</button>
+      </form>
+    <?php endif; ?>
     <h2>Change password</h2>
     <form method="post" action="myaccount.php">
       <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(cookbook_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
@@ -206,6 +224,7 @@ $accountRecipes = $recipeStatement->fetchAll();
       <div class="form-group"><label for="confirm_password">Confirm new password</label><input id="confirm_password" name="confirm_password" type="password" class="form-control" minlength="8" autocomplete="new-password" required></div>
       <button type="submit" class="btn btn-primary">Change password</button>
     </form>
+    <p class="mt-3"><a class="cookbook-link" href="forgot_password.php">Forgot your password?</a></p>
   </div>
   <div class="tab-pane fade <?php echo $activeTab === 'recipes' ? 'show active' : ''; ?>" id="v-pills-recipes" role="tabpanel" aria-labelledby="v-pills-recipes-tab">
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -232,30 +251,16 @@ $accountRecipes = $recipeStatement->fetchAll();
     <?php endif; ?>
   </div>
   <div class="tab-pane fade <?php echo $activeTab === 'collections' ? 'show active' : ''; ?>" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-    <a href="collections.php">Browse collections</a>
-  </div>
-  <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-    <form method="post" action="logout.php">
-      <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(cookbook_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
-      <button class="btn btn-outline-secondary" type="submit">Sign out</button>
-    </form>
+    <h2>Collections</h2>
+    <p class="text-muted">Browse recipes grouped by collection.</p>
+    <a class="btn btn-outline-primary" href="collections.php">Browse collections</a>
   </div>
 </div>
+</div>
+</div>
+</main>
 
 </section>
-<!-- This is the end of the first-block -->
-
-<!-- This is the start of the second-block -->
-<section class = "second-block">
-  
-</section>
-<!-- This is the end of the second-block -->
-
-<!-- This is the start of the third-block -->
-<section class = "third-block">
-  
-</section>
-<!-- This is the end of the third-block -->
 
 <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

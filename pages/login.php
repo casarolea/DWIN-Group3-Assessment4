@@ -36,15 +36,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../styles/styles.css">
+  <link rel="icon" type="image/x-icon" href="../images/cblogo2.png">
   <title>Log in | CookBook</title>
 </head>
 <body>
-<main class="container my-5" style="max-width: 520px;">
-  <h1>Log in</h1>
+<?php include __DIR__ . '/../includes/site_navbar.php'; ?>
+<section class="first-block">
+<main class="container my-5 auth-panel" style="max-width: 520px;">
+  <h1 class="auth-page-title mb-4">Log in</h1>
   <?php if ($error !== ''): ?>
     <div class="alert alert-danger" role="alert"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></div>
   <?php endif; ?>
-  <form method="post" action="login.php">
+  <form method="post" action="login.php" class="auth-form">
     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(cookbook_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
     <div class="form-group">
       <label for="email">Email</label>
@@ -54,10 +57,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <label for="password">Password</label>
       <input id="password" name="password" type="password" class="form-control" autocomplete="current-password" required>
     </div>
-    <button class="btn btn-primary" type="submit">Log in</button>
+    <button class="btn cookbook-button" type="submit">Log in</button>
   </form>
-  <p class="mt-3">New here? <a href="register.php">Create an account</a></p>
-  <a href="index.php">Return to CookBook</a>
+  <p class="mt-3"><a class="cookbook-link" href="forgot_password.php">Forgot your password?</a></p>
+  <p>New here? <a class="cookbook-link" href="register.php">Create an account</a></p>
+  <a class="cookbook-link" href="index.php">Return to CookBook</a>
 </main>
+ </section>
+<?php include __DIR__ . '/../includes/site_footer.php'; ?>
 </body>
 </html>
