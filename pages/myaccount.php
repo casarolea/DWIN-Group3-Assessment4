@@ -3,7 +3,7 @@ require_once __DIR__ . '/../includes/auth.php';
 cookbook_require_login();
 $pdo = cookbook_db();
 $accountUser = cookbook_current_user();
-$accountStatement = $pdo->prepare('SELECT username, email, profile_photo, password_hash FROM users WHERE user_id = ?');
+$accountStatement = $pdo->prepare('SELECT username, email, full_name, location, profile_photo, password_hash FROM users WHERE user_id = ?');
 $accountStatement->execute([$accountUser['id']]);
 $accountDetails = $accountStatement->fetch();
 $profilePhotoUrl = null;
@@ -24,6 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   } elseif (($_POST['action'] ?? '') === 'update_profile') {
     $username = trim($_POST['username'] ?? '');
     $email = strtolower(trim($_POST['email'] ?? ''));
+    $fullName = trim($_POST['full_name'] ?? '');
+    $location = trim($_POST['location'] ?? '');
     $profilePhoto = $accountDetails['profile_photo'];
     $newPhotoPath = null;
 
@@ -31,6 +33,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $accountError = 'Enter a username of up to 80 characters.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
       $accountError = 'Enter a valid email address.';
+    } elseif (strlen($fullName) > 120) {
+      $accountError = 'Enter a name of up to 120 characters.';
+    } elseif (strlen($location) > 120) {
+      $accountError = 'Enter a location of up to 120 characters.';
     } elseif (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] !== UPLOAD_ERR_NO_FILE) {
       $upload = $_FILES['profile_photo'];
       if ($upload['error'] !== UPLOAD_ERR_OK || $upload['size'] > 4 * 1024 * 1024) {
@@ -59,8 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($accountError === '') {
       try {
-        $update = $pdo->prepare('UPDATE users SET username = ?, email = ?, profile_photo = ? WHERE user_id = ?');
-        $update->execute([$username, $email, $profilePhoto, $accountUser['id']]);
+        $update = $pdo->prepare('UPDATE users SET username = ?, email = ?, full_name = ?, location = ?, profile_photo = ? WHERE user_id = ?');
+        $update->execute([$username, $email, $fullName, $location, $profilePhoto, $accountUser['id']]);
         $_SESSION['user']['username'] = $username;
         $_SESSION['user']['email'] = $email;
         if ($newPhotoPath && $accountDetails['profile_photo'] && str_starts_with($accountDetails['profile_photo'], 'profiles/')) {
@@ -76,6 +82,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
       }
     }
+     } elseif (($_POST['action'] ?? '') === 'delete_profile_photo') {
+    if (!empty($accountDetails['profile_photo']) && str_starts_with($accountDetails['profile_photo'], 'profiles/')) {
+      $photoFile = __DIR__ . '/../images/' . $accountDetails['profile_photo'];
+      if (is_file($photoFile)) {
+        @unlink($photoFile);
+      }
+    }
+    $update = $pdo->prepare('UPDATE users SET profile_photo = NULL WHERE user_id = ?');
+    $update->execute([$accountUser['id']]);
+    header('Location: myaccount.php?tab=profile&status=photo-deleted');
+    exit;
   } elseif (($_POST['action'] ?? '') === 'change_password') {
     $newPassword = $_POST['new_password'] ?? '';
     if (!password_verify($_POST['current_password'] ?? '', $accountDetails['password_hash'])) {
@@ -172,6 +189,9 @@ $accountRecipes = $recipeStatement->fetchAll();
     <?php elseif (($_GET['status'] ?? '') === 'password-updated'): ?>
       <div class="alert alert-success" role="status">Password changed.</div>
     <?php endif; ?>
+    <?php elseif (($_GET['status'] ?? '') === 'photo-deleted'): ?>
+      <div class="alert alert-success" role="status">Profile picture deleted.</div>
+    <?php endif; ?>
     <?php if ($profilePhotoUrl): ?>
       <img class="profile-photo" src="<?php echo htmlspecialchars($profilePhotoUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="Profile photo" width="120" height="120" style="object-fit: cover; border-radius: 50%;">
     <?php endif; ?>
@@ -181,9 +201,18 @@ $accountRecipes = $recipeStatement->fetchAll();
       <input type="hidden" name="action" value="update_profile">
       <div class="form-group"><label for="username">Username</label><input id="username" name="username" class="form-control" maxlength="80" required value="<?php echo htmlspecialchars($_POST['username'] ?? $accountDetails['username'], ENT_QUOTES, 'UTF-8'); ?>"></div>
       <div class="form-group"><label for="email">Email</label><input id="email" name="email" type="email" class="form-control" required value="<?php echo htmlspecialchars($_POST['email'] ?? $accountDetails['email'], ENT_QUOTES, 'UTF-8'); ?>"></div>
+      <div class="form-group"><label for="full_name">Name</label><input id="full_name" name="full_name" class="form-control" maxlength="120" value="<?php echo htmlspecialchars($_POST['full_name'] ?? ($accountDetails['full_name'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>"></div>
+      <div class="form-group"><label for="location">Location</label><input id="location" name="location" class="form-control" maxlength="120" placeholder="e.g. Sydney, Australia" value="<?php echo htmlspecialchars($_POST['location'] ?? ($accountDetails['location'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>"></div>
       <div class="form-group"><label for="profile_photo">Profile photo</label><input id="profile_photo" name="profile_photo" type="file" class="form-control-file" accept="image/jpeg,image/png,image/webp"><small class="form-text text-muted">JPG, PNG, or WebP; maximum 4MB.</small></div>
       <button type="submit" class="btn btn-primary">Save profile</button>
     </form>
+    <?php if ($profilePhotoUrl): ?>
+      <form method="post" action="myaccount.php" class="mb-4" onsubmit="return confirm('Delete your profile picture?');">
+        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(cookbook_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+        <input type="hidden" name="action" value="delete_profile_photo">
+        <button type="submit" class="btn btn-outline-danger">Delete profile picture</button>
+      </form>
+    <?php endif; ?>
     <h2>Change password</h2>
     <form method="post" action="myaccount.php">
       <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(cookbook_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
@@ -193,6 +222,7 @@ $accountRecipes = $recipeStatement->fetchAll();
       <div class="form-group"><label for="confirm_password">Confirm new password</label><input id="confirm_password" name="confirm_password" type="password" class="form-control" minlength="8" autocomplete="new-password" required></div>
       <button type="submit" class="btn btn-primary">Change password</button>
     </form>
+    <p class="mt-3"><a class="cookbook-link" href="forgot_password.php">Forgot your password?</a></p>
   </div>
   <div class="tab-pane fade <?php echo $activeTab === 'recipes' ? 'show active' : ''; ?>" id="v-pills-recipes" role="tabpanel" aria-labelledby="v-pills-recipes-tab">
     <div class="d-flex justify-content-between align-items-center mb-3">

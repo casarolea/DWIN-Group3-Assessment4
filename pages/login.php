@@ -59,7 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <button class="btn cookbook-button" type="submit">Log in</button>
   </form>
-  <p class="mt-3">New here? <a class="cookbook-link" href="register.php">Create an account</a></p>
+  <p class="mt-3"><a class="cookbook-link" href="forgot_password.php">Forgot your password?</a></p>
+  <p>New here? <a class="cookbook-link" href="register.php">Create an account</a></p>
   <a class="cookbook-link" href="index.php">Return to CookBook</a>
 </main>
  </section>

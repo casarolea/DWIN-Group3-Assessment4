@@ -30,10 +30,24 @@ function cookbook_db(): PDO
             email VARCHAR(254) NOT NULL UNIQUE,
             password_hash VARCHAR(255) NOT NULL,
             role ENUM('user', 'admin') NOT NULL DEFAULT 'user',
+            full_name VARCHAR(120) NULL,
+            location VARCHAR(120) NULL,
             profile_photo VARCHAR(255) NULL,
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+        $pdo->exec('ALTER TABLE users ADD COLUMN IF NOT EXISTS full_name VARCHAR(120) NULL');
+        $pdo->exec('ALTER TABLE users ADD COLUMN IF NOT EXISTS location VARCHAR(120) NULL');
         $pdo->exec('ALTER TABLE users ADD COLUMN IF NOT EXISTS profile_photo VARCHAR(255) NULL');
+        $pdo->exec("CREATE TABLE IF NOT EXISTS password_reset_tokens (
+            reset_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            user_id INT UNSIGNED NOT NULL,
+            token_hash CHAR(64) NOT NULL UNIQUE,
+            expires_at DATETIME NOT NULL,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            INDEX (user_id),
+            CONSTRAINT fk_password_reset_user FOREIGN KEY (user_id)
+                REFERENCES users(user_id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
         $pdo->exec('ALTER TABLE recipes ADD COLUMN IF NOT EXISTS owner_id INT UNSIGNED NULL');
         $pdo->exec('ALTER TABLE recipes ADD COLUMN IF NOT EXISTS photo VARCHAR(255) NULL');
         $pdo->exec("CREATE TABLE IF NOT EXISTS recipe_media (
