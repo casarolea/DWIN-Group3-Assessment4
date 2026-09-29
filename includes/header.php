@@ -35,6 +35,13 @@ $page_title = isset($page_title) ? $page_title: 'CookBook';
     <link rel="stylesheet" href="../styles/styles.css">
     <!-- end of local csss -->
 
+    <!-- function for extra css in pages -->
+    <?php if (isset($extra_css)): ?>
+    <?php foreach ($extra_css as $css): ?>
+        <link rel="stylesheet" href="<?php echo $css; ?>">
+    <?php endforeach; ?>
+    <?php endif; ?>
+
     <title>CookBook</title>
     <link rel="icon" type="image/x-icon" href="../images/cblogo2.png">
 

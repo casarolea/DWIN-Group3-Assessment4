@@ -1,7 +1,7 @@
-<?php require_once __DIR__ . '/../includes/auth.php'; ?>
-
-<?php $page_title = "Home";
-include "../includes/header.php"; ?>
+<?php require_once __DIR__ . '/../includes/auth.php';
+  $page_title = "Home";
+  include "../includes/header.php"; 
+?>
 
 <!-- This is the start of the first-block -->
 <section class="first-block">
@@ -22,7 +22,7 @@ include "../includes/header.php"; ?>
           <p class="subtitle-text">Different recipes available from different individuals around the world!</p>
           <p class="lead mb-0">
             <!-- Swapped btn-primary for a custom outline class -->
-            <a class="btn custom-btn btn-lg" href="recipe.php" role="button">View Recipes</a>
+            <a class="btn custom-btn btn-lg" href="recipe_page.php" role="button">View Recipes</a>
           </p>
         </div>
 

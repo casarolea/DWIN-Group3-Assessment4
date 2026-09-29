@@ -183,18 +183,20 @@ $accountRecipes = $recipeStatement->fetchAll();
   </div>
   <div class="tab-pane fade <?php echo $activeTab === 'profile' ? 'show active' : ''; ?>" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
     <?php if ($accountError !== ''): ?>
-      <div class="alert alert-danger" role="alert"><?php echo htmlspecialchars($accountError, ENT_QUOTES, 'UTF-8'); ?></div>
+      <div class="alert alert-danger" role="alert">
+        <?php echo htmlspecialchars($accountError, ENT_QUOTES, 'UTF-8'); ?>
+      </div>
     <?php elseif (($_GET['status'] ?? '') === 'profile-updated'): ?>
       <div class="alert alert-success" role="status">Profile updated.</div>
     <?php elseif (($_GET['status'] ?? '') === 'password-updated'): ?>
       <div class="alert alert-success" role="status">Password changed.</div>
-    <?php endif; ?>
     <?php elseif (($_GET['status'] ?? '') === 'photo-deleted'): ?>
       <div class="alert alert-success" role="status">Profile picture deleted.</div>
     <?php endif; ?>
     <?php if ($profilePhotoUrl): ?>
       <img class="profile-photo" src="<?php echo htmlspecialchars($profilePhotoUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="Profile photo" width="120" height="120" style="object-fit: cover; border-radius: 50%;">
     <?php endif; ?>
+    
     <h2>Edit profile</h2>
     <form method="post" action="myaccount.php" enctype="multipart/form-data" class="mb-4">
       <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(cookbook_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
