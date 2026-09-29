@@ -55,7 +55,7 @@ $page_title = isset($page_title) ? $page_title: 'CookBook';
 <!-- THIS IS THE START OF THE NAV BAR (MENU SECTION) -->
 <nav class="navbar navbar-expand-lg navbar-light">
   <!-- Logo -->
-  <a class="gochihand nav-name" href="index.php">
+  <a class="gochihand nav-name" href="../pages/index.php">
     <img class="logo" src="../images/cblogo1.png" alt="CookBook Logo" title="CookBook logo">
     CookBook
   </a>
@@ -70,7 +70,7 @@ $page_title = isset($page_title) ? $page_title: 'CookBook';
       <!-- Left Side of Navbar -->
         <ul class="navbar-nav ralewayextrabold nav-text">
           <li class="nav-item">
-            <a class="nav-link nav-text4" href="recipe_page.php">RECIPES</a>
+            <a class="nav-link nav-text4" href="../pages/recipe_page.php">RECIPES</a>
           </li>
         </ul>
 
