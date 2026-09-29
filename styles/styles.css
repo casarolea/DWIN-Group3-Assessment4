@@ -1,13 +1,13 @@
 /* ==== START OF FONT LIST ==== */
 
 @font-face {
-    font-family:'RalewayEB';
+    font-family: 'RalewayEB';
     src: url(../fonts/raleway-extrabold.ttf);
 }
 
 @font-face {
     font-family: 'RalewayB';
-    src: url(../fonts/raleway-bold.ttf)
+    src: url(../fonts/raleway-bold.ttf);
 }
 
 @font-face {
@@ -17,7 +17,7 @@
 
 .ralewayextrabold {
     font-family: 'RalewayEB';
-  }
+}
 
 .ralewaybold {
     font-family: 'RalewayB';
@@ -29,7 +29,9 @@
 
 /* ==== END OF FONT LIST ==== */
 
+
 /* ==== START OF NAVBAR ==== */
+
 .logo {
     width: 80px;
     height: auto;
@@ -91,7 +93,6 @@
     opacity: 1;
 }
 
-
 .login-link {
     margin-left: 35px;
     margin-right: 25px;
@@ -106,18 +107,21 @@
     font-family: 'RalewayEB';
     font-size: 20px;
     padding: 10px 18px;
+    border: none;
     border-radius: 6px;
     text-decoration: none;
 }
 
 .register-button:hover {
     color: #f8f6ee !important;
+    background-color: #654c43;
     text-decoration: none;
 }
 
 /* ==== END OF NAVBAR ==== */
 
-/* ==== BLOCKS ==== */
+
+/* ==== START OF BLOCKS ==== */
 
 .first-block {
     background-color: #f8f6ee;
@@ -134,7 +138,8 @@
     padding: 50px 5%;
 }
 
-/* ==== BLOCKS ==== */
+/* ==== END OF BLOCKS ==== */
+
 
 /* ==== START OF FOOTER ==== */
 
@@ -164,54 +169,48 @@
 
 /* ==== END OF FOOTER ==== */
 
+
 /* ==== START OF INDEX BODY ==== */
 
-/* 1. Change the jumbotron background from gray to beige */
 section.first-block .jumbotron.custom-jumbotron {
-    background-color: #eaddd3 !important; 
-    padding: 3rem 2rem !important;        
-    border-radius: 15px !important;       
+    background-color: #eaddd3 !important;
+    padding: 3rem 2rem !important;
+    border-radius: 15px !important;
 }
 
-/* 2. Style your text column spacing */
 section.first-block .custom-jumbotron .text-side {
     padding-left: 3rem !important;
 }
 
-/* 3. Style the title text to brown and apply font */
 section.first-block .custom-jumbotron .homepage-title {
-    color: #654c43 !important;            
+    color: #654c43 !important;
     font-family: 'RalewayEB', sans-serif !important;
-    font-size: 3.2rem !important;         
+    font-size: 3.2rem !important;
     font-weight: 800 !important;
     line-height: 1.15;
 }
 
-/* 4. Make the horizontal line matching brown */
 section.first-block .custom-jumbotron .title-divider {
     border-top: 2px solid #654c43 !important;
     opacity: 1 !important;
     margin: 20px 0 !important;
 }
 
-/* 5. Style the subtitle description text to brown */
 section.first-block .custom-jumbotron .subtitle-text {
     color: #654c43 !important;
     font-size: 1.1rem !important;
 }
 
-/* 6. Fix the button to have a brown border and brown text */
 section.first-block .custom-jumbotron .custom-btn {
     color: #654c43 !important;
     background-color: transparent !important;
     border: 2px solid #654c43 !important;
-    border-radius: 30px !important;       
+    border-radius: 30px !important;
     padding: 10px 35px !important;
     font-weight: 600 !important;
     display: inline-block;
 }
 
-/* 7. Button Hover Style */
 section.first-block .custom-jumbotron .custom-btn:hover {
     color: #eaddd3 !important;
     background-color: #654c43 !important;
@@ -220,3 +219,265 @@ section.first-block .custom-jumbotron .custom-btn:hover {
 
 /* ==== END OF INDEX BODY ==== */
 
+
+/* ==== START OF RECIPE DETAIL PAGE ==== */
+
+body.recipe-detail-page {
+    background-color: #f8f6ee !important;
+    color: #654c43;
+}
+
+.recipe-detail-container {
+    max-width: 1400px;
+    padding-top: 20px;
+    padding-bottom: 60px;
+}
+
+.recipe-detail-page main > .btn-outline-secondary {
+    color: #654c43 !important;
+    background-color: transparent !important;
+    border: 2px solid #654c43 !important;
+    border-radius: 30px !important;
+    padding: 8px 22px;
+    font-weight: 600;
+}
+
+.recipe-detail-page main > .btn-outline-secondary:hover {
+    color: #f8f6ee !important;
+    background-color: #654c43 !important;
+    border-color: #654c43 !important;
+}
+
+.recipe-detail-card {
+    background-color: #eaddd3 !important;
+    border: none !important;
+    border-radius: 15px !important;
+    overflow: hidden;
+    box-shadow: none !important;
+}
+
+.recipe-detail-card .row {
+    margin: 0;
+}
+
+.recipe-detail-card .row > div {
+    padding: 0 !important;
+}
+
+.recipe-detail-card img.card-img-top {
+    display: block;
+    width: 100%;
+    height: 480px;
+    max-height: 480px !important;
+    object-fit: cover;
+    border-radius: 0;
+}
+
+.recipe-detail-card video {
+    display: block;
+    width: 100%;
+    height: 480px;
+    object-fit: cover;
+}
+
+.recipe-detail-body {
+    background-color: #eaddd3 !important;
+    color: #654c43;
+    padding: 40px 50px !important;
+}
+
+.recipe-detail-body .card-title {
+    color: #654c43 !important;
+    font-family: 'RalewayEB', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.recipe-detail-body h3 {
+    color: #654c43 !important;
+    font-family: 'RalewayEB', sans-serif;
+    font-size: 27px;
+    font-weight: 800;
+    margin-bottom: 18px;
+}
+
+.recipe-detail-body h4 {
+    color: #654c43 !important;
+    font-family: 'RalewayEB', sans-serif;
+    font-weight: 800;
+}
+
+.recipe-detail-body p {
+    color: #654c43;
+}
+
+.recipe-detail-body .text-muted {
+    color: #8f6956 !important;
+}
+
+.recipe-detail-body hr {
+    border: 0;
+    border-top: 2px solid #654c43;
+    opacity: 1;
+    margin: 30px 0;
+}
+
+.recipe-detail-body .btn-outline-secondary,
+.recipe-detail-body .btn-outline-danger {
+    color: #654c43 !important;
+    background-color: transparent !important;
+    border: 2px solid #654c43 !important;
+    border-radius: 30px !important;
+    padding: 8px 22px;
+    font-weight: 600;
+}
+
+.recipe-detail-body .btn-outline-secondary:hover,
+.recipe-detail-body .btn-outline-danger:hover {
+    color: #f8f6ee !important;
+    background-color: #654c43 !important;
+    border-color: #654c43 !important;
+}
+
+.recipe-detail-body .btn-outline-primary {
+    color: #654c43 !important;
+    background-color: transparent !important;
+    border: 2px solid #654c43 !important;
+    border-radius: 30px !important;
+    padding: 8px 22px;
+    font-weight: 600;
+}
+
+.recipe-detail-body .btn-outline-primary:hover {
+    color: #f8f6ee !important;
+    background-color: #654c43 !important;
+    border-color: #654c43 !important;
+}
+
+.recipe-detail-body .btn-danger,
+.recipe-detail-body .btn-primary {
+    color: #f8f6ee !important;
+    background-color: #8f6956 !important;
+    border: 2px solid #8f6956 !important;
+    border-radius: 30px !important;
+    padding: 8px 22px;
+    font-weight: 600;
+}
+
+.recipe-detail-body .btn-danger:hover,
+.recipe-detail-body .btn-primary:hover {
+    color: #f8f6ee !important;
+    background-color: #654c43 !important;
+    border-color: #654c43 !important;
+}
+
+.recipe-detail-body .btn-link {
+    color: #d6a600 !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+}
+
+.recipe-detail-body textarea.form-control {
+    width: 100%;
+    background-color: #f8f6ee;
+    color: #654c43;
+    border: 2px solid #8f6956;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.recipe-detail-body textarea.form-control::placeholder {
+    color: #8f6956;
+    opacity: 1;
+}
+
+.recipe-detail-body textarea.form-control:focus {
+    background-color: #ffffff;
+    color: #654c43;
+    border-color: #654c43;
+    box-shadow: 0 0 0 0.2rem rgba(101, 76, 67, 0.15);
+}
+
+.recipe-detail-body .border {
+    background-color: #f8f6ee;
+    border: 1px solid #8f6956 !important;
+    border-radius: 10px !important;
+}
+
+#copyMessage {
+    color: #654c43 !important;
+    font-weight: bold;
+}
+
+/* ==== END OF RECIPE DETAIL PAGE ==== */
+
+
+/* ==== START OF RESPONSIVE DESIGN ==== */
+
+@media (max-width: 991px) {
+    .navbar-search {
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    .login-link {
+        margin-left: 0;
+        margin-right: 15px;
+    }
+
+    .recipe-detail-container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    section.first-block .custom-jumbotron .text-side {
+        padding-left: 0 !important;
+        padding-top: 30px;
+    }
+
+    section.first-block .custom-jumbotron .homepage-title {
+        font-size: 2.3rem !important;
+    }
+
+    .recipe-detail-container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .recipe-detail-body {
+        padding: 25px !important;
+    }
+
+    .recipe-detail-body .card-title {
+        font-size: 30px;
+    }
+
+    .recipe-detail-body h3 {
+        font-size: 23px;
+    }
+
+    .recipe-detail-card img.card-img-top,
+    .recipe-detail-card video {
+        height: 300px;
+    }
+
+    .navbar-search {
+        height: 45px;
+        font-size: 16px;
+    }
+
+    .nav-name {
+        font-size: 25px;
+    }
+
+    .logo {
+        width: 65px;
+    }
+}
+
+/* ==== END OF RESPONSIVE DESIGN ==== */
