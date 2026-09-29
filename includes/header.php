@@ -11,7 +11,7 @@ $current_user = cookbook_current_user();
 $logged_in = ($current_user !== false && $current_user !== null);
 
 // check the user role - ONLY FOR ADMIN
-$is_admin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+$is_admin = $logged_in && ($current_user['role'] ?? '') === 'admin';
 
 // get current page for active page check
 $current_page = basename($_SERVER['PHP_SELF']);
@@ -76,20 +76,21 @@ $page_title = isset($page_title) ? $page_title: 'CookBook';
 
       <!-- Right Side of Navbar -->
        <div class="ml-auto d-flex align-items-center">
+        
         <!-- For Search -->
         <form class="form-inline">
           <input class="form-control navbar-search" type="search" placeholder="SEARCH">
         </form>
         <!-- For Login -->
 
+        <!-- admin only -->
+        <?php if ($is_admin): ?>
+        <a class="nav-link nav-text4 login-link" href="../admin/dashboard.php">ADMIN</a>
+        <?php endif; ?>
+
          <!-- logged in user -->
         <?php if (cookbook_current_user()): ?>
-          <a class="nav-link nav-text4 login-link" href="myaccount.php">ACCOUNT</a>
-
-          <!-- admin only -->
-           <?php if ($is_admin): ?>
-            <a class="nav-link nav-text4 login-link" href="../admin/dashboard.php">ADMIN</a>
-            <?php endif; ?>
+            <a class="nav-link nav-text4 login-link" href="../pages/myaccount.php">ACCOUNT</a>
 
             <!-- logout -->
           <form class="form-inline" method="post" action="logout.php">
