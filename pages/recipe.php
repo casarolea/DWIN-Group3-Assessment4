@@ -249,48 +249,12 @@ function recipe_media_url(string $path): string
     );
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="../styles/styles.css">
-    <title><?php echo htmlspecialchars($recipe['title'], ENT_QUOTES, 'UTF-8'); ?> — CookBook</title>
-    <link rel="icon" type="image/x-icon" href="../images/cblogo2.png">
-</head>
-<body class="recipe-detail-page">
-<nav class="navbar navbar-expand-lg navbar-light">
-    <a class="gochihand nav-name" href="index.php">
-        <img class="logo" src="../images/cblogo1.png" alt="CookBook Logo" title="CookBook logo">
-        CookBook
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ralewayextrabold nav-text">
-            <li class="nav-item">
-                <a class="nav-link nav-text4" href="recipe_page.php">RECIPES</a>
-            </li>
-        </ul>
-        <div class="ml-auto d-flex align-items-center">
-            <form class="form-inline" action="recipe_page.php" method="get">
-                <input class="form-control navbar-search" type="search" name="search" placeholder="SEARCH" aria-label="Search recipes">
-            </form>
-            <?php if ($currentUser): ?>
-                <a class="nav-link nav-text4 login-link" href="myaccount.php">ACCOUNT</a>
-                <form class="form-inline" method="post" action="logout.php">
-                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(cookbook_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
-                    <button class="register-button" type="submit">LOG OUT</button>
-                </form>
-            <?php else: ?>
-                <a class="nav-link nav-text4 login-link" href="login.php">LOGIN</a>
-                <a class="register-button" href="register.php">REGISTER</a>
-            <?php endif; ?>
-        </div>
-    </div>
-</nav>
+
+<!-- header -->
+<?php
+$page_title = "Recipes";
+include "../includes/header.php";
+?>
 
 <main class="container my-5 recipe-detail-container">
     <a href="recipe_page.php" class="btn btn-outline-secondary mb-4">

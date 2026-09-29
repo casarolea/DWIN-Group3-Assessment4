@@ -29,18 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../styles/styles.css">
-  <link rel="icon" type="image/x-icon" href="../images/cblogo2.png">
-  <title>Log in | CookBook</title>
-</head>
-<body>
-<?php include __DIR__ . '/../includes/site_navbar.php'; ?>
+
+<!-- header -->
+<?php
+$page_title = "Login";
+include "../includes/header.php";
+?>
+
 <section class="first-block">
 <main class="container my-5 auth-panel" style="max-width: 520px;">
   <h1 class="auth-page-title mb-4">Log in</h1>
@@ -64,6 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <a class="cookbook-link" href="index.php">Return to CookBook</a>
 </main>
  </section>
-<?php include __DIR__ . '/../includes/site_footer.php'; ?>
-</body>
-</html>
+
+ <!-- footer -->
+<?php include "../includes/footer.php"; ?>
