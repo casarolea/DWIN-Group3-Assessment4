@@ -38,10 +38,7 @@
           <a href="index.php" class="footer-links ralewaybold">Home</a>
         </p>
         <p>
-          <a href="recipes.php" class="footer-links ralewaybold">Recipes</a>
-        </p>
-        <p>
-          <a href="mycollections.php" class="footer-links ralewaybold">Collections</a>
+          <a href="recipe_page.php" class="footer-links ralewaybold">Recipes</a>
         </p>
       </div>
       <!-- Grid column -->

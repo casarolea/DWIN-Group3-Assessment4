@@ -363,9 +363,6 @@ $page_title = isset($page_title) ? $page_title: 'CookBook';
           <p>
             <a href="recipe_page.php" class="footer-links ralewaybold">Recipes</a>
           </p>
-          <p>
-            <a href="collections.php" class="footer-links ralewaybold">Collections</a>
-          </p>
         </div>
         <!-- Grid column -->
 
