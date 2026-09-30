@@ -1,6 +1,6 @@
 # CookBook
 
-CookBook is a PHP and MySQL recipe website. Visitors can browse and search recipes by title, ingredient, or category. Registered users can manage their own recipes and profile; administrators can manage all recipes and create collections.
+CookBook is a PHP and MySQL recipe website. Visitors can browse and search recipes by title, ingredient, or category. Registered users can manage their own recipes and profile, create personal collections, and save recipes to those collections. Administrators can manage all recipes.
 
 ## Requirements
 
@@ -18,11 +18,11 @@ The app's database connection currently uses `localhost`, database `cookbook`, u
 5. Open the site at `http://localhost/DWIN/DWIN-Group3-Assessment4/pages/index.php`.
 6. Register an account at `http://localhost/DWIN/DWIN-Group3-Assessment4/pages/register.php`.
 
-The account, recipe ownership, profile-photo, and recipe-media tables/columns are created or migrated automatically by `includes/auth.php` the first time an account-related page connects to the database. Keep the MySQL server running while using the site.
+The account, recipe ownership, profile-photo, recipe-media, and personal collection tables/columns are created or migrated automatically by `includes/auth.php` the first time an account-related page connects to the database. Keep the MySQL server running while using the site.
 
 ## Accounts and Access
 
-All public registrations receive the `user` role. Users can browse the site, create recipes, manage only their own recipes, edit their profile, upload a profile photo, and change their password. Recipe creation, editing, deletion, and account changes require a signed-in session.
+All public registrations receive the `user` role. Users can browse the site, create and manage their own recipes, create personal collections and save recipes to them, edit their profile, upload a profile photo, and change their password. Recipe creation, editing, deletion, collection management, and account changes require a signed-in session.
 
 To make a registered account an administrator:
 
@@ -37,7 +37,7 @@ To make a registered account an administrator:
 
 3. Sign out and sign back in to load the updated role into the session.
 
-Administrators can create collections and manage all recipes. Never add a public role selector to registration; assign administrator access only through a trusted database account.
+Administrators can manage all recipes. Personal collections remain private to their owners. Never add a public role selector to registration; assign administrator access only through a trusted database account.
 
 ## Recipe Media
 

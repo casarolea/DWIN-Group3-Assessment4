@@ -79,8 +79,8 @@ $page_title = isset($page_title) ? $page_title: 'CookBook';
        <div class="ml-auto d-flex align-items-center">
         
         <!-- For Search -->
-        <form class="form-inline">
-          <input class="form-control navbar-search" type="search" placeholder="SEARCH">
+        <form class="form-inline" action="../pages/recipe_page.php" method="get">
+          <input class="form-control navbar-search" type="search" name="search" placeholder="SEARCH" aria-label="Search recipes">
         </form>
         <!-- For Login -->
 
