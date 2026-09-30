@@ -1,46 +1,35 @@
 <?php
 require_once __DIR__ . '/../includes/auth.php';
-cookbook_require_role('admin');
-
-// 1. Database Connection Configuration
-$host    = 'localhost';
-$user    = 'root';     // Replace with your DB username
-$pass    = '';         // Replace with your DB password
-$db      = 'cookbook'; // Replace with your DB name
-$charset = 'utf8mb4';
-
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
-
-try {
-    $pdo = new PDO($dsn, $user, $pass, $options);
-} catch (\PDOException $e) {
-    die("Connection failed: " . $e->getMessage());
-}
-
+cookbook_require_login();
+$pdo = cookbook_db();
+$currentUser = cookbook_current_user();
 $message = '';
 
-// 2. Form Submission Handling
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $collection_name = trim($_POST['name'] ?? '');
+    $collectionName = trim($_POST['name'] ?? '');
+    $description = trim($_POST['description'] ?? '');
 
-    if ($collection_name !== '') {
-        try {
-            $stmt = $pdo->prepare("INSERT INTO categories (category_name) VALUES (:name)");
-            $stmt->execute(['name' => $collection_name]);
-
-            // Redirect back to main page on success
-            header("Location: collections.php?status=success");
-            exit();
-        } catch (\PDOException $e) {
-            $message = "Error saving collection: " . $e->getMessage();
-        }
+    if (!cookbook_csrf_is_valid()) {
+        $message = 'Your session expired. Please reload and try again.';
+    } elseif ($collectionName === '' || strlen($collectionName) > 100) {
+        $message = 'Enter a collection name of up to 100 characters.';
+    } elseif (strlen($description) > 500) {
+        $message = 'The description must be 500 characters or fewer.';
     } else {
-        $message = "Collection name is required.";
+        try {
+            $statement = $pdo->prepare(
+                'INSERT INTO user_collections (owner_id, name, description) VALUES (?, ?, ?)'
+            );
+            $statement->execute([$currentUser['id'], $collectionName, $description ?: null]);
+            header('Location: collections.php?status=success');
+            exit;
+        } catch (PDOException $exception) {
+            if ($exception->getCode() === '23000') {
+                $message = 'You already have a collection with that name.';
+            } else {
+                throw $exception;
+            }
+        }
     }
 }
 ?>
@@ -62,6 +51,7 @@ include "../includes/header.php";
     <?php endif; ?>
 
     <form action="create_collection.php" method="POST">
+        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(cookbook_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
         <div class="form-group mb-3">
             <label for="name" class="font-weight-bold">Collection Name:</label>
             <input type="text" id="name" name="name" class="form-control" required placeholder="e.g. Italian Dishes">

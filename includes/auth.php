@@ -97,6 +97,26 @@ function cookbook_db(): PDO
             CONSTRAINT fk_recipe_comments_recipe FOREIGN KEY (recipe_id)
                 REFERENCES recipes(recipe_id) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+        $pdo->exec("CREATE TABLE IF NOT EXISTS user_collections (
+            collection_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            owner_id INT UNSIGNED NOT NULL,
+            name VARCHAR(100) NOT NULL,
+            description VARCHAR(500) NULL,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE KEY uq_user_collections_owner_name (owner_id, name),
+            CONSTRAINT fk_user_collections_owner FOREIGN KEY (owner_id)
+                REFERENCES users(user_id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+        $pdo->exec("CREATE TABLE IF NOT EXISTS user_collection_recipes (
+            collection_id INT UNSIGNED NOT NULL,
+            recipe_id INT NOT NULL,
+            added_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (collection_id, recipe_id),
+            CONSTRAINT fk_user_collection_recipes_collection FOREIGN KEY (collection_id)
+                REFERENCES user_collections(collection_id) ON DELETE CASCADE,
+            CONSTRAINT fk_user_collection_recipes_recipe FOREIGN KEY (recipe_id)
+                REFERENCES recipes(recipe_id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
     }
 
     return $pdo;
