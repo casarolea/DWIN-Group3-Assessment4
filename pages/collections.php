@@ -1,61 +1,40 @@
 <?php
-// 1. Database Connection Configuration
-$host    = 'localhost';
-$user    = 'root';     // Replace with your DB username
-$pass    = '';         // Replace with your DB password
-$db      = 'cookbook'; // Replace with your DB name
-$charset = 'utf8mb4';
+require_once __DIR__ . '/../includes/auth.php';
+cookbook_require_login();
+$pdo = cookbook_db();
+$currentUser = cookbook_current_user();
+$searchTerm = trim($_GET['search'] ?? '');
 
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
-
-try {
-    $pdo = new PDO($dsn, $user, $pass, $options);
-} catch (\PDOException $e) {
-    die("Connection failed: " . $e->getMessage());
-}
-
-// 2. Load and Execute SQL File
-$sqlFile = __DIR__ . '/DWIN-Group3-Assessment4/databases/recipe.sql';
-
-if (file_exists($sqlFile)) {
-    $sqlCommands = file_get_contents($sqlFile);
-    try {
-        $pdo->exec($sqlCommands);
-    } catch (\PDOException $e) {
-        // SQL execution error handling
-    }
-}
-
-// 3. Search Logic
-$searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
-
-// 4. Fetch Collections and Recipe Counts
 $query = '
-    SELECT 
-        c.category_id AS id,
-        c.category_name AS name,
-        CONCAT("Collection of ", LOWER(c.category_name), " recipes.") AS description,
-        COUNT(rc.recipe_id) AS recipe_count
-    FROM categories c
-    LEFT JOIN recipe_categories rc ON c.category_id = rc.category_id
+    SELECT uc.collection_id AS id, uc.name, uc.description,
+           COUNT(ucr.recipe_id) AS recipe_count
+    FROM user_collections uc
+    LEFT JOIN user_collection_recipes ucr ON ucr.collection_id = uc.collection_id
+    WHERE uc.owner_id = :owner_id
 ';
-
-$params = [];
+$parameters = ['owner_id' => $currentUser['id']];
 if ($searchTerm !== '') {
-    $query .= ' WHERE c.category_name LIKE :search';
-    $params['search'] = '%' . $searchTerm . '%';
+    $query .= ' AND uc.name LIKE :search';
+    $parameters['search'] = '%' . $searchTerm . '%';
 }
+$query .= ' GROUP BY uc.collection_id, uc.name, uc.description ORDER BY uc.name';
+$statement = $pdo->prepare($query);
+$statement->execute($parameters);
+$collections = $statement->fetchAll();
 
-$query .= ' GROUP BY c.category_id, c.category_name ORDER BY c.category_name ASC';
-
-$stmt = $pdo->prepare($query);
-$stmt->execute($params);
-$collections = $stmt->fetchAll();
+$recipeStatement = $pdo->prepare(
+    'SELECT ucr.collection_id, r.recipe_id, r.title
+     FROM user_collection_recipes ucr
+     JOIN user_collections uc ON uc.collection_id = ucr.collection_id
+     JOIN recipes r ON r.recipe_id = ucr.recipe_id
+     WHERE uc.owner_id = ?
+     ORDER BY r.title'
+);
+$recipeStatement->execute([$currentUser['id']]);
+$collectionRecipes = [];
+foreach ($recipeStatement->fetchAll() as $collectionRecipe) {
+    $collectionRecipes[$collectionRecipe['collection_id']][] = $collectionRecipe;
+}
 
 // 5. Pagination Logic
 $perPage     = 6;
@@ -103,8 +82,8 @@ include "../includes/header.php";
 
     <?php if (empty($collections) && $searchTerm === ''): ?>
         <div class="text-center py-5">
-            <p class="lead text-muted">No collections found.</p>
-            <a href="create_collection.php" class="register-button">Create the first collection</a>
+            <p class="lead text-muted">You haven't added any collections yet.</p>
+            <a href="create_collection.php" class="register-button">Create your first collection</a>
         </div>
 
     <?php elseif (empty($collections) && $searchTerm !== ''): ?>
@@ -127,17 +106,25 @@ include "../includes/header.php";
                                 <?php echo htmlspecialchars($collection['name'], ENT_QUOTES, 'UTF-8'); ?>
                             </h5>
                             <p class="card-text text-muted small mb-4">
-                                <?php echo htmlspecialchars($collection['description'], ENT_QUOTES, 'UTF-8'); ?>
+                                <?php echo htmlspecialchars($collection['description'] ?? '', ENT_QUOTES, 'UTF-8'); ?>
                             </p>
+
+                            <?php if (empty($collectionRecipes[$collection['id']])): ?>
+                                <p class="text-muted">No recipes in this collection yet.</p>
+                            <?php else: ?>
+                                <ul class="list-unstyled mb-4">
+                                    <?php foreach ($collectionRecipes[$collection['id']] as $recipe): ?>
+                                        <li><a href="recipe.php?id=<?php echo (int) $recipe['recipe_id']; ?>"><?php echo htmlspecialchars($recipe['title'], ENT_QUOTES, 'UTF-8'); ?></a></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            <?php endif; ?>
                             
                             <div class="mt-auto d-flex justify-content-between align-items-center">
                                 <span class="badge badge-pill badge-light border text-secondary px-3 py-2">
                                     <?php echo (int)$collection['recipe_count']; ?> 
                                     <?php echo (int)$collection['recipe_count'] === 1 ? 'recipe' : 'recipes'; ?>
                                 </span>
-                                <a href="recipe_page.php?category=<?php echo rawurlencode($collection['name']); ?>" class="btn btn-sm btn-outline-primary">
-                                  Browse Recipes
-                                </a>
+                                                                <span class="text-muted small">Your collection</span>
                             </div>
                         </div>
                     </div>

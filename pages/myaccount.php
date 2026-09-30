@@ -124,6 +124,16 @@ $accountQuery .= ' GROUP BY r.recipe_id ORDER BY r.recipe_id DESC';
 $recipeStatement = $pdo->prepare($accountQuery);
 $recipeStatement->execute($recipeParameters);
 $accountRecipes = $recipeStatement->fetchAll();
+$collectionStatement = $pdo->prepare(
+  'SELECT uc.collection_id, uc.name, uc.description, COUNT(ucr.recipe_id) AS recipe_count
+   FROM user_collections uc
+   LEFT JOIN user_collection_recipes ucr ON ucr.collection_id = uc.collection_id
+   WHERE uc.owner_id = ?
+   GROUP BY uc.collection_id, uc.name, uc.description
+   ORDER BY uc.name'
+);
+$collectionStatement->execute([$accountUser['id']]);
+$accountCollections = $collectionStatement->fetchAll();
 ?>
 
 <!-- header -->
@@ -231,9 +241,24 @@ include "../includes/header.php";
     <?php endif; ?>
   </div>
   <div class="tab-pane fade <?php echo $activeTab === 'collections' ? 'show active' : ''; ?>" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-    <h2>Collections</h2>
-    <p class="text-muted">Browse recipes grouped by collection.</p>
-    <a class="btn btn-outline-primary" href="collections.php">Browse collections</a>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>My Collections</h2>
+      <a class="btn btn-primary" href="create_collection.php">Create collection</a>
+    </div>
+    <?php if (!$accountCollections): ?>
+      <p class="text-muted">You haven't added any collections yet.</p>
+    <?php else: ?>
+      <?php foreach ($accountCollections as $collection): ?>
+        <div class="border-bottom py-3">
+          <h3 class="h5"><?php echo htmlspecialchars($collection['name'], ENT_QUOTES, 'UTF-8'); ?></h3>
+          <?php if ($collection['description']): ?>
+            <p class="text-muted mb-2"><?php echo htmlspecialchars($collection['description'], ENT_QUOTES, 'UTF-8'); ?></p>
+          <?php endif; ?>
+          <p class="mb-0"><?php echo (int) $collection['recipe_count']; ?> <?php echo (int) $collection['recipe_count'] === 1 ? 'recipe' : 'recipes'; ?></p>
+        </div>
+      <?php endforeach; ?>
+    <?php endif; ?>
+    <a class="btn btn-outline-primary mt-3" href="collections.php">Manage collections</a>
   </div>
 </div>
 </div>

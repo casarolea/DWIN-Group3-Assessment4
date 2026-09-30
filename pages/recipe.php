@@ -4,6 +4,35 @@ require_once __DIR__ . '/../includes/auth.php';
 $pdo = cookbook_db();
 $currentUser = cookbook_current_user();
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_collection'])) {
+    if (!$currentUser) {
+        header('Location: login.php');
+        exit;
+    }
+    if (!cookbook_csrf_is_valid()) {
+        http_response_code(400);
+        exit('Invalid security token.');
+    }
+
+    $collectionId = (int) ($_POST['collection_id'] ?? 0);
+    $collectionOwner = $pdo->prepare(
+        'SELECT collection_id FROM user_collections WHERE collection_id = ? AND owner_id = ?'
+    );
+    $collectionOwner->execute([$collectionId, $currentUser['id']]);
+    if (!$collectionOwner->fetchColumn()) {
+        http_response_code(403);
+        exit('That collection is not available to your account.');
+    }
+
+    $recipeToSave = (int) ($_POST['recipe_id'] ?? 0);
+    $saveRecipe = $pdo->prepare(
+        'INSERT IGNORE INTO user_collection_recipes (collection_id, recipe_id) VALUES (?, ?)'
+    );
+    $saveRecipe->execute([$collectionId, $recipeToSave]);
+    header('Location: recipe.php?id=' . $recipeToSave . '&collection_status=added');
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['favorite_action'])) {
     if (!$currentUser) {
         header('Location: login.php');
@@ -127,6 +156,15 @@ $recipe = $stmt->fetch();
 
 if (!$recipe) {
     die('Recipe not found.');
+}
+
+$userCollections = [];
+if ($currentUser) {
+    $userCollectionsStatement = $pdo->prepare(
+        'SELECT collection_id, name FROM user_collections WHERE owner_id = ? ORDER BY name'
+    );
+    $userCollectionsStatement->execute([$currentUser['id']]);
+    $userCollections = $userCollectionsStatement->fetchAll();
 }
 
 $isFavorite = false;
@@ -303,6 +341,31 @@ include "../includes/header.php";
                 Cook Time: <?php echo (int)($recipe['cook_time_minutes'] ?? 0); ?> mins |
                 Calories: <?php echo (int)($recipe['calories_per_serving'] ?? 0); ?> kcal
             </p>
+
+            <?php if (($_GET['collection_status'] ?? '') === 'added'): ?>
+                <div class="alert alert-success" role="status">Recipe added to your collection.</div>
+            <?php endif; ?>
+
+            <div class="mb-3">
+                <?php if (!$currentUser): ?>
+                    <a href="login.php">Log in to save this recipe to a collection.</a>
+                <?php elseif ($userCollections): ?>
+                    <form method="post" class="form-inline">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(cookbook_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+                        <input type="hidden" name="add_to_collection" value="1">
+                        <input type="hidden" name="recipe_id" value="<?php echo (int) $recipeId; ?>">
+                        <label class="mr-2" for="collection_id">Save to collection</label>
+                        <select class="form-control mr-2" id="collection_id" name="collection_id" required>
+                            <?php foreach ($userCollections as $collection): ?>
+                                <option value="<?php echo (int) $collection['collection_id']; ?>"><?php echo htmlspecialchars($collection['name'], ENT_QUOTES, 'UTF-8'); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <button class="btn btn-outline-primary" type="submit">Add recipe</button>
+                    </form>
+                <?php else: ?>
+                    <a href="create_collection.php">Create a collection to save this recipe.</a>
+                <?php endif; ?>
+            </div>
 
             <div class="mb-3">
                 <?php if ($currentUser): ?>

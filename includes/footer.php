@@ -19,10 +19,10 @@
         </p>
         <hr>
         <p>
-          <a href="#" class="footer-links ralewaybold footer-text2">Instagram</a>
-          <a href="#" class="footer-links ralewaybold footer-text2">Facebook</a>
-          <a href="#" class="footer-links ralewaybold footer-text2">Tiktok</a>
-          <a href="#" class="footer-links ralewaybold footer-text2">YouTube</a>
+          <a href="https://www.instagram.com/" class="footer-links ralewaybold footer-text2">Instagram</a>
+          <a href="https://www.facebook.com/" class="footer-links ralewaybold footer-text2">Facebook</a>
+          <a href="https://www.tiktok.com/" class="footer-links ralewaybold footer-text2">Tiktok</a>
+          <a href="https://www.youtube.com/" class="footer-links ralewaybold footer-text2">YouTube</a>
         </p>
       </div>
       <!-- Grid column -->
