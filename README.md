@@ -1,6 +1,6 @@
 # CookBook
 
-CookBook is a PHP and MySQL recipe website. Visitors can browse and search recipes by title, ingredient, or category. Registered users can manage their own recipes and profile, create personal collections, and save recipes to those collections. Administrators can manage all recipes.
+CookBook is a PHP and MySQL recipe website. You must sign in before using the home page, recipe search, or recipe detail pages. Registered users can manage their own recipes and profile, create personal collections, and save recipes to those collections. Administrators can manage all recipes.
 
 ## Requirements
 
@@ -15,14 +15,14 @@ The app reads database settings from `COOKBOOK_DB_HOST`, `COOKBOOK_DB_NAME`, `CO
 2. Start Apache and MySQL in the XAMPP Control Panel.
 3. Open phpMyAdmin at `http://localhost/phpmyadmin` and create a database named `cookbook` using `utf8mb4`.
 4. Select the `cookbook` database, choose **Import**, and import `databases/recipe.sql` to create the recipe/category tables and sample recipes.
-5. Open the site at `http://localhost/DWIN/DWIN-Group3-Assessment4/pages/index.php`.
-6. Register an account at `http://localhost/DWIN/DWIN-Group3-Assessment4/pages/register.php`.
+5. Register an account at `http://localhost/DWIN/DWIN-Group3-Assessment4/pages/register.php`.
+6. Sign in at `http://localhost/DWIN/DWIN-Group3-Assessment4/pages/login.php`; the home page is available after login.
 
 The account, recipe ownership, profile-photo, recipe-media, and personal collection tables/columns are created or migrated automatically by `includes/auth.php` the first time an account-related page connects to the database. Keep the MySQL server running while using the site.
 
 ## Accounts and Access
 
-The homepage requires sign-in. All public registrations receive the `user` role. Users can create and manage their own recipes, create personal collections and save recipes to them, edit their profile, upload a profile photo, and change their password. New or edited recipes and new comments remain pending until a moderator approves them. External URLs in recipe and comment content are rejected. Recipe and collection management requires a signed-in session.
+There are no seeded accounts or default passwords. Every user chooses their own email and password on registration; do not place real passwords in this README or in source control. All registrations receive the `user` role. Users can create and manage their own recipes, create personal collections and save recipes to them, edit their profile, upload a profile photo, and change their password. New or edited recipes and new comments remain pending until a moderator approves them. External URLs in recipe and comment content are rejected. Recipe search, detail pages, recipe and collection management all require a signed-in session.
 
 To make a registered account an administrator:
 

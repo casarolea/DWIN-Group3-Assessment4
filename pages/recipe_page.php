@@ -1,5 +1,6 @@
   <?php
   require_once __DIR__ . '/../includes/auth.php';
+  cookbook_require_login();
   $pdo = cookbook_db();
 
   $searchTerm = trim($_GET['search'] ?? '');
