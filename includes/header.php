@@ -94,15 +94,15 @@ $page_title = isset($page_title) ? $page_title: 'CookBook';
             <a class="nav-link nav-text4 login-link" href="../pages/myaccount.php">ACCOUNT</a>
 
             <!-- logout -->
-          <form class="form-inline" method="post" action="logout.php">
+          <form class="form-inline" method="post" action="../pages/logout.php">
             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(cookbook_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
             <button class="register-button" type="submit">LOG OUT</button>
           </form>
 
           <!-- if user is not logged in -->
         <?php else: ?>
-          <a class="nav-link nav-text4 login-link" href="login.php">LOGIN</a>
-          <a class="register-button" href="register.php">REGISTER</a>
+          <a class="nav-link nav-text4 login-link" href="../pages/login.php">LOGIN</a>
+          <a class="register-button" href="../pages/register.php">REGISTER</a>
         <?php endif; ?>
       </div>
       </div>

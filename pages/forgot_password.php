@@ -4,6 +4,9 @@ $pdo = cookbook_db();
 
 $message = '';
 $resetLink = '';
+$requestHost = strtolower(preg_replace('/:\\d+$/', '', $_SERVER['HTTP_HOST'] ?? ''));
+$isLocalRequest = in_array($_SERVER['REMOTE_ADDR'] ?? '', ['127.0.0.1', '::1'], true)
+  && in_array($requestHost, ['localhost', '127.0.0.1'], true);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!cookbook_csrf_is_valid()) {
@@ -18,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $statement->execute([$email]);
             $user = $statement->fetch();
 
-            if ($user) {
+            if ($user && $isLocalRequest) {
                 $pdo->prepare('DELETE FROM password_reset_tokens WHERE user_id = ?')->execute([$user['user_id']]);
 
                 $token = bin2hex(random_bytes(32));
@@ -28,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $insert = $pdo->prepare('INSERT INTO password_reset_tokens (user_id, token_hash, expires_at) VALUES (?, ?, ?)');
                 $insert->execute([$user['user_id'], $tokenHash, $expiresAt]);
 
-                // Localhost prototype: show the reset link on screen instead of sending email.
                 $resetLink = 'reset_password.php?token=' . urlencode($token);
             }
 
@@ -61,7 +63,7 @@ include "../includes/header.php";
     <button class="btn cookbook-button" type="submit">Request password reset</button>
   </form>
 
-  <?php if ($resetLink !== ''): ?>
+  <?php if ($resetLink !== '' && $isLocalRequest): ?>
     <div class="alert alert-warning mt-4" role="alert">
       <strong>Local testing only:</strong> email is not configured in XAMPP, so use this reset link:<br>
       <a href="<?php echo htmlspecialchars($resetLink, ENT_QUOTES, 'UTF-8'); ?>">Reset my password</a>

@@ -1,15 +1,6 @@
   <?php
   require_once __DIR__ . '/../includes/auth.php';
-  $pdo = new PDO(
-    'mysql:host=localhost;dbname=cookbook;charset=utf8mb4',
-    'root',
-    '',
-    [
-      PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-      PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-      PDO::ATTR_EMULATE_PREPARES => false,
-    ]
-  );
+  $pdo = cookbook_db();
 
   $searchTerm = trim($_GET['search'] ?? '');
   $selectedCategory = trim($_GET['category'] ?? '');
@@ -143,8 +134,8 @@ $page_title = isset($page_title) ? $page_title: 'CookBook';
        <div class="ml-auto d-flex align-items-center">
         
         <!-- For Search -->
-        <form class="form-inline">
-          <input class="form-control navbar-search" type="search" placeholder="SEARCH">
+        <form class="form-inline" action="recipe_page.php" method="get">
+          <input class="form-control navbar-search" type="search" name="search" placeholder="SEARCH" aria-label="Search recipes">
         </form>
         <!-- For Login -->
 
@@ -362,6 +353,9 @@ $page_title = isset($page_title) ? $page_title: 'CookBook';
           </p>
           <p>
             <a href="recipe_page.php" class="footer-links ralewaybold">Recipes</a>
+          </p>
+          <p>
+            <a href="privacy.php" class="footer-links ralewaybold">Privacy Policy</a>
           </p>
         </div>
         <!-- Grid column -->

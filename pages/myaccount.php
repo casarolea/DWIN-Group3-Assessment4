@@ -12,7 +12,7 @@ if (
   && str_starts_with($accountDetails['profile_photo'], 'profiles/')
   && is_file(__DIR__ . '/../images/' . $accountDetails['profile_photo'])
 ) {
-  $profilePhotoUrl = '../images/profiles/' . rawurlencode(basename($accountDetails['profile_photo']));
+  $profilePhotoUrl = 'profile_photo.php';
 }
 $accountError = '';
 $activeTab = $_GET['tab'] ?? '';

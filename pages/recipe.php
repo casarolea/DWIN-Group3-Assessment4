@@ -564,6 +564,9 @@ include "../includes/header.php";
                     <p>
                         <a href="collections.php" class="footer-links ralewaybold">Collections</a>
                     </p>
+                    <p>
+                        <a href="privacy.php" class="footer-links ralewaybold">Privacy Policy</a>
+                    </p>
                 </div>
 
                 <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">

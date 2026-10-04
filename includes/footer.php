@@ -40,6 +40,9 @@
         <p>
           <a href="recipe_page.php" class="footer-links ralewaybold">Recipes</a>
         </p>
+        <p>
+          <a href="privacy.php" class="footer-links ralewaybold">Privacy Policy</a>
+        </p>
       </div>
       <!-- Grid column -->
 

@@ -24,6 +24,7 @@
           <p><a href="index.php" class="footer-links ralewaybold">Home</a></p>
           <p><a href="recipe_page.php" class="footer-links ralewaybold">Recipes</a></p>
           <p><a href="collections.php" class="footer-links ralewaybold">Collections</a></p>
+          <p><a href="privacy.php" class="footer-links ralewaybold">Privacy Policy</a></p>
         </div>
         <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
           <h6 class="text-uppercase ralewayextrabold footer-text1 mb-4">GROUP INFORMATION</h6>

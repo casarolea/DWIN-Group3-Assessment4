@@ -1,6 +1,11 @@
 <?php
+ini_set('session.use_strict_mode', '1');
+ini_set('session.use_only_cookies', '1');
+ini_set('session.use_trans_sid', '0');
+
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_set_cookie_params([
+        'path' => '/',
         'httponly' => true,
         'samesite' => 'Lax',
         'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
@@ -8,16 +13,26 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
+if (!headers_sent()) {
+    header('X-Content-Type-Options: nosniff');
+    header('X-Frame-Options: SAMEORIGIN');
+    header('Referrer-Policy: strict-origin-when-cross-origin');
+    header('Permissions-Policy: camera=(), microphone=(), geolocation=()');
+}
 
 function cookbook_db(): PDO
 {
     static $pdo = null;
 
     if ($pdo === null) {
+        $host = getenv('COOKBOOK_DB_HOST') ?: 'localhost';
+        $database = getenv('COOKBOOK_DB_NAME') ?: 'cookbook';
+        $username = getenv('COOKBOOK_DB_USER') ?: 'root';
+        $password = getenv('COOKBOOK_DB_PASS') ?: '';
         $pdo = new PDO(
-            'mysql:host=localhost;dbname=cookbook;charset=utf8mb4',
-            'root',
-            '',
+            "mysql:host={$host};dbname={$database};charset=utf8mb4",
+            $username,
+            $password,
             [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -133,6 +148,9 @@ function cookbook_require_login(): void
         header('Location: login.php');
         exit;
     }
+
+    header('Cache-Control: no-store, private');
+    header('Pragma: no-cache');
 }
 
 function cookbook_require_role(string $role): void

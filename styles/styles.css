@@ -606,6 +606,27 @@ body.recipe-detail-page main {
 }
 /* ==== END ACCOUNT AND AUTHENTICATION PAGES ==== */
 
+.privacy-policy {
+    color: #654c43;
+    max-width: 960px;
+}
+
+.privacy-policy h1,
+.privacy-policy h2 {
+    color: #654c43;
+    font-family: 'RalewayEB', sans-serif;
+    margin-top: 1.75rem;
+}
+
+.privacy-policy h1 {
+    margin-top: 0;
+}
+
+.privacy-policy p,
+.privacy-policy li {
+    line-height: 1.65;
+}
+
 /* ==== START OF ADMIN DASHBOARD ==== */
 .admin-dashboard {
     background-color: #f8f6ee;

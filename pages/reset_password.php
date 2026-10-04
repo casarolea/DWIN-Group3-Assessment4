@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/auth.php';
+header('Cache-Control: no-store, private');
+header('Referrer-Policy: no-referrer');
 $pdo = cookbook_db();
 
 $token = $_GET['token'] ?? $_POST['token'] ?? '';
