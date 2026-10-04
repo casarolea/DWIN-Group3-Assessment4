@@ -24,6 +24,18 @@ The account, recipe ownership, profile-photo, recipe-media, and personal collect
 
 There are no seeded accounts or default passwords. Every user chooses their own email and password on registration; do not place real passwords in this README or in source control. All registrations receive the `user` role. Users can create and manage their own recipes, create personal collections and save recipes to them, edit their profile, upload a profile photo, and change their password. New or edited recipes and new comments remain pending until a moderator approves them. External URLs in recipe and comment content are rejected. Recipe search, detail pages, recipe and collection management all require a signed-in session.
 
+### Local XAMPP Accounts
+
+These development accounts were created in the current local `cookbook` database. They are not included in SQL seed files and will not exist in a fresh installation. Passwords are intentionally omitted from this tracked file; use the passwords supplied directly to the project owner, or create new accounts through registration.
+
+| Username | Login email | Role |
+| --- | --- | --- |
+| `admin` | `admin@cookbook.local` | Admin |
+| `moderator` | `moderator@cookbook.local` | Moderator |
+| `jowiey` | `jowiey@cookbook.local` | User |
+| `casandra` | `casandra@cookbook.local` | User |
+| `chauncey` | `chauncey@cookbook.local` | User |
+
 To make a registered account an administrator:
 
 1. Register the account normally.
