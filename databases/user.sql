@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(80) NOT NULL,
     email VARCHAR(254) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
-    role ENUM('user', 'admin') NOT NULL DEFAULT 'user',
+    role ENUM('user', 'moderator', 'admin') NOT NULL DEFAULT 'user',
     full_name VARCHAR(120) NULL,
     location VARCHAR(120) NULL,
     profile_photo VARCHAR(255) NULL,
@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS users (
 ALTER TABLE users ADD COLUMN IF NOT EXISTS full_name VARCHAR(120) NULL;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS location VARCHAR(120) NULL;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS profile_photo VARCHAR(255) NULL;
+ALTER TABLE users MODIFY role ENUM('user', 'moderator', 'admin') NOT NULL DEFAULT 'user';
 
 CREATE TABLE IF NOT EXISTS password_reset_tokens (
     reset_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

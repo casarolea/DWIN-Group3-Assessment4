@@ -1,5 +1,14 @@
 <?php
 require_once __DIR__ . '/../includes/auth.php';
+cookbook_require_login();
+$pdo = cookbook_db();
+$activityStatement = $pdo->query(
+  'SELECT actor_name, event_type, recipe_id, recipe_title, created_at
+   FROM recipe_activity
+   ORDER BY created_at DESC, activity_id DESC
+   LIMIT 12'
+);
+$activityFeed = $activityStatement->fetchAll();
 $page_title = "Home";
 $extra_css = ["../styles/recipe_page.css"];
 include "../includes/header.php";
@@ -126,6 +135,39 @@ include "../includes/header.php";
 
 </section>
 <!-- This is the end of the second-block -->
+
+<section class="third-block">
+  <div class="container">
+    <h2 class="developers-title">COMMUNITY RECIPE ACTIVITY</h2>
+    <?php if (!$activityFeed): ?>
+      <p class="text-center">No approved recipe activity yet.</p>
+    <?php else: ?>
+      <div class="activity-feed">
+        <?php foreach ($activityFeed as $activity): ?>
+          <article class="activity-item">
+            <p class="mb-1">
+              <strong><?php echo htmlspecialchars($activity['actor_name'], ENT_QUOTES, 'UTF-8'); ?></strong>
+              <?php
+              $activityVerb = [
+                  'recipe_created' => 'created',
+                  'recipe_updated' => 'updated',
+                  'recipe_deleted' => 'deleted',
+              ][$activity['event_type']] ?? 'changed';
+              echo htmlspecialchars($activityVerb, ENT_QUOTES, 'UTF-8');
+              ?>
+              <?php if ($activity['event_type'] !== 'recipe_deleted' && $activity['recipe_id']): ?>
+                <a href="recipe.php?id=<?php echo (int) $activity['recipe_id']; ?>"><?php echo htmlspecialchars($activity['recipe_title'], ENT_QUOTES, 'UTF-8'); ?></a>
+              <?php else: ?>
+                <span><?php echo htmlspecialchars($activity['recipe_title'], ENT_QUOTES, 'UTF-8'); ?></span>
+              <?php endif; ?>
+            </p>
+            <time class="text-muted" datetime="<?php echo htmlspecialchars($activity['created_at'], ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($activity['created_at'], ENT_QUOTES, 'UTF-8'); ?></time>
+          </article>
+        <?php endforeach; ?>
+      </div>
+    <?php endif; ?>
+  </div>
+</section>
 
 <!-- This is the start of the third-block -->
 <section class = "third-block">

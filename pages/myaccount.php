@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 }
 
-$accountQuery = 'SELECT r.recipe_id, r.title, r.prep_time_minutes, r.cook_time_minutes, r.photo,
+$accountQuery = 'SELECT r.recipe_id, r.title, r.prep_time_minutes, r.cook_time_minutes, r.photo, r.moderation_status,
                         GROUP_CONCAT(DISTINCT c.category_name ORDER BY c.category_name SEPARATOR ", ") AS categories
                  FROM recipes r
                  LEFT JOIN recipe_categories rc ON rc.recipe_id = r.recipe_id
@@ -217,6 +217,13 @@ include "../includes/header.php";
     <p class="mt-3"><a class="cookbook-link" href="forgot_password.php">Forgot your password?</a></p>
   </div>
   <div class="tab-pane fade <?php echo $activeTab === 'recipes' ? 'show active' : ''; ?>" id="v-pills-recipes" role="tabpanel" aria-labelledby="v-pills-recipes-tab">
+    <?php if (($_GET['status'] ?? '') === 'review-pending'): ?>
+      <div class="alert alert-info" role="status">Your changes were submitted for moderator review.</div>
+    <?php elseif (($_GET['status'] ?? '') === 'recipe-updated'): ?>
+      <div class="alert alert-success" role="status">Recipe updated.</div>
+    <?php elseif (($_GET['status'] ?? '') === 'recipe-deleted'): ?>
+      <div class="alert alert-success" role="status">Recipe deleted.</div>
+    <?php endif; ?>
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h2><?php echo $accountUser['role'] === 'admin' ? 'All Recipes' : 'My Recipes'; ?></h2>
       <a class="btn btn-primary" href="create-recipe.php">Add recipe</a>
@@ -226,7 +233,13 @@ include "../includes/header.php";
     <?php else: ?>
       <?php foreach ($accountRecipes as $recipe): ?>
         <div class="d-flex justify-content-between align-items-center border-bottom py-3">
-          <div><strong><?php echo htmlspecialchars($recipe['title'], ENT_QUOTES, 'UTF-8'); ?></strong><br><span class="text-muted"><?php echo htmlspecialchars($recipe['categories'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span></div>
+          <div>
+            <strong><?php echo htmlspecialchars($recipe['title'], ENT_QUOTES, 'UTF-8'); ?></strong>
+            <span class="badge badge-<?php echo $recipe['moderation_status'] === 'approved' ? 'success' : ($recipe['moderation_status'] === 'rejected' ? 'danger' : 'warning'); ?>">
+              <?php echo htmlspecialchars(ucfirst($recipe['moderation_status']), ENT_QUOTES, 'UTF-8'); ?>
+            </span><br>
+            <span class="text-muted"><?php echo htmlspecialchars($recipe['categories'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
+          </div>
           <div class="d-flex align-items-center">
             <a class="btn btn-sm btn-outline-secondary mr-2" href="recipe.php?id=<?php echo (int) $recipe['recipe_id']; ?>">View</a>
             <a class="btn btn-sm btn-outline-primary mr-2" href="edit-recipe.php?id=<?php echo (int) $recipe['recipe_id']; ?>">Edit</a>

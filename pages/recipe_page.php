@@ -7,8 +7,9 @@
   $selectedIngredient = trim($_GET['ingredient'] ?? '');
 
   $categories = $pdo->query('SELECT category_name FROM categories ORDER BY category_name')->fetchAll();
-  $conditions = [];
-  $parameters = [];
+  $conditions = ['r.moderation_status = :moderation_status'];
+  $parameters = ['moderation_status' => 'approved'];
+  $hasBrowseFilter = $searchTerm !== '' || $selectedCategory !== '' || $selectedIngredient !== '';
 
   if ($searchTerm !== '') {
     $conditions[] = '(r.title LIKE :title_search OR r.ingredients LIKE :ingredient_search OR EXISTS (
@@ -45,13 +46,13 @@
     LEFT JOIN categories c ON c.category_id = rc.category_id
   ';
 
-  if ($conditions) {
+  if ($hasBrowseFilter) {
     $recipeQuery .= ' WHERE ' . implode(' AND ', $conditions);
   }
 
   $recipeQuery .= ' GROUP BY r.recipe_id ORDER BY r.title';
   $recipes = [];
-  if ($conditions) {
+  if ($hasBrowseFilter) {
     $recipeStatement = $pdo->prepare($recipeQuery);
     $recipeStatement->execute($parameters);
     $recipes = $recipeStatement->fetchAll();
@@ -264,7 +265,7 @@ $page_title = isset($page_title) ? $page_title: 'CookBook';
   <!-- This is the end of the second-block -->
 
   <!-- This is the start of the third-block -->
-  <?php if ($conditions): ?>
+  <?php if ($hasBrowseFilter): ?>
   <section class = "third-block">
     <div class="container py-4" id="searchResultsContainer">
       <h2 class="category-title text-center">

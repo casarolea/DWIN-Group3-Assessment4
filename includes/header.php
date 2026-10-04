@@ -13,6 +13,7 @@ $logged_in = ($current_user !== false && $current_user !== null);
 
 // check the user role - ONLY FOR ADMIN
 $is_admin = $logged_in && ($current_user['role'] ?? '') === 'admin';
+$is_moderator = $logged_in && cookbook_is_moderator($current_user);
 
 // get current page for active page check
 $current_page = basename($_SERVER['PHP_SELF']);
@@ -87,6 +88,9 @@ $page_title = isset($page_title) ? $page_title: 'CookBook';
         <!-- admin only -->
         <?php if ($is_admin): ?>
         <a class="nav-link nav-text4 login-link" href="../admin/dashboard.php">ADMIN</a>
+        <?php endif; ?>
+        <?php if ($is_moderator): ?>
+        <a class="nav-link nav-text4 login-link" href="../pages/moderation.php">MODERATION</a>
         <?php endif; ?>
 
          <!-- logged in user -->

@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !cookbook_csrf_is_valid()) {
 }
 
 $recipeId = (int) ($_POST['recipe_id'] ?? 0);
-$statement = $pdo->prepare('SELECT owner_id, photo FROM recipes WHERE recipe_id = ?');
+$statement = $pdo->prepare('SELECT owner_id, photo, title, moderation_status FROM recipes WHERE recipe_id = ?');
 $statement->execute([$recipeId]);
 $recipe = $statement->fetch();
 if (!$recipe) {
@@ -25,6 +25,9 @@ if ($currentUser['role'] !== 'admin' && (int) $recipe['owner_id'] !== (int) $cur
 $mediaStatement = $pdo->prepare('SELECT media_path FROM recipe_media WHERE recipe_id = ?');
 $mediaStatement->execute([$recipeId]);
 $mediaPaths = $mediaStatement->fetchAll(PDO::FETCH_COLUMN);
+if ($recipe['moderation_status'] === 'approved') {
+    cookbook_record_recipe_activity($pdo, $currentUser, 'recipe_deleted', $recipeId, $recipe['title']);
+}
 $pdo->prepare('DELETE FROM recipes WHERE recipe_id = ?')->execute([$recipeId]);
 
 $recipeDirectory = realpath(__DIR__ . '/../images/recipes');

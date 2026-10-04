@@ -43,20 +43,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Your session expired. Please reload and try again.';
     } elseif ($title === '' || $ingredients === '' || $instructions === '' || $categoryId <= 0) {
         $error = 'Title, category, ingredients, and instructions are required.';
+    } elseif (cookbook_reject_external_links($title . "\n" . $ingredients . "\n" . $instructions)) {
+      $error = 'Recipe titles, ingredients, and instructions cannot contain external links.';
     } else {
         try {
             $uploadedMedia = cookbook_validate_recipe_media($_FILES['media'] ?? null);
             $pdo->beginTransaction();
+        $canPublish = $currentUser['role'] === 'admin';
+        $nextStatus = $canPublish ? 'approved' : 'pending';
+        $pendingEvent = $recipe['moderation_status'] === 'pending'
+          ? $recipe['pending_event']
+          : 'updated';
             $update = $pdo->prepare(
                 'UPDATE recipes SET title = ?, prep_time_minutes = ?, cook_time_minutes = ?, servings = ?,
-                 calories_per_serving = ?, ingredients = ?, instructions = ? WHERE recipe_id = ?'
+           calories_per_serving = ?, ingredients = ?, instructions = ?, moderation_status = ?, pending_event = ?
+           WHERE recipe_id = ?'
             );
-            $update->execute([$title, $prepTime, $cookTime, $servings, $calories, $ingredients, $instructions, $recipeId]);
+        $update->execute([$title, $prepTime, $cookTime, $servings, $calories, $ingredients, $instructions, $nextStatus, $pendingEvent, $recipeId]);
             $pdo->prepare('DELETE FROM recipe_categories WHERE recipe_id = ?')->execute([$recipeId]);
             $pdo->prepare('INSERT INTO recipe_categories (recipe_id, category_id) VALUES (?, ?)')->execute([$recipeId, $categoryId]);
             cookbook_store_recipe_media($pdo, $recipeId, $uploadedMedia);
+            if ($canPublish) {
+              $activityEvent = $pendingEvent === 'created' ? 'recipe_created' : 'recipe_updated';
+              cookbook_record_recipe_activity($pdo, $currentUser, $activityEvent, $recipeId, $title);
+            }
             $pdo->commit();
-            header('Location: myaccount.php?tab=recipes&status=recipe-updated');
+            header('Location: myaccount.php?tab=recipes&status=' . ($canPublish ? 'recipe-updated' : 'review-pending'));
             exit;
         } catch (RuntimeException $exception) {
             if ($pdo->inTransaction()) {

@@ -22,7 +22,7 @@ The account, recipe ownership, profile-photo, recipe-media, and personal collect
 
 ## Accounts and Access
 
-All public registrations receive the `user` role. Users can browse the site, create and manage their own recipes, create personal collections and save recipes to them, edit their profile, upload a profile photo, and change their password. Recipe creation, editing, deletion, collection management, and account changes require a signed-in session.
+The homepage requires sign-in. All public registrations receive the `user` role. Users can create and manage their own recipes, create personal collections and save recipes to them, edit their profile, upload a profile photo, and change their password. New or edited recipes and new comments remain pending until a moderator approves them. External URLs in recipe and comment content are rejected. Recipe and collection management requires a signed-in session.
 
 To make a registered account an administrator:
 
@@ -37,7 +37,10 @@ To make a registered account an administrator:
 
 3. Sign out and sign back in to load the updated role into the session.
 
-Administrators can manage all recipes. Personal collections remain private to their owners. Never add a public role selector to registration; assign administrator access only through a trusted database account.
+Administrators can manage all recipes and moderate every submission. Moderators can approve or reject other users' pending recipes and comments but cannot approve their own submissions. Personal collections remain private to their owners. Assign elevated roles only through a trusted database account, never through public registration.
+
+To make a registered account a moderator, use the same SQL query above with `moderator` in place of `admin`, then sign that account out and back in.
+Moderators review submissions at `pages/moderation.php` and cannot approve their own content.
 
 ## Recipe Media
 
@@ -53,6 +56,7 @@ If uploads are rejected due to request size, raise PHP's `upload_max_filesize` a
 - `pages/login.php` and `pages/register.php`: authentication
 - `pages/myaccount.php`: profile, password, and recipe management
 - `pages/create-recipe.php`: add a recipe while signed in
+- `pages/moderation.php`: approve or reject pending recipes and comments
 - `pages/collections.php`: browse collections
 - `pages/privacy.php`: information stored, visibility, and privacy choices
 

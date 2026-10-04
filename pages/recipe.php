@@ -114,10 +114,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment_text'])) {
     $commentRecipeId = (int)($_POST['recipe_id'] ?? 0);
     $commentText = trim($_POST['comment_text'] ?? '');
 
+    if (cookbook_reject_external_links($commentText)) {
+        header('Location: recipe.php?id=' . $commentRecipeId . '&comment_status=links-blocked');
+        exit;
+    }
+
     if ($commentText !== '') {
         $commentStmt = $pdo->prepare(
-            'INSERT INTO recipe_comments (user_id, recipe_id, comment_text)
-             VALUES (:user_id, :recipe_id, :comment_text)'
+            'INSERT INTO recipe_comments (user_id, recipe_id, comment_text, moderation_status)
+             VALUES (:user_id, :recipe_id, :comment_text, "pending")'
         );
         $commentStmt->execute([
             'user_id' => $currentUser['id'],
@@ -126,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment_text'])) {
         ]);
     }
 
-    header('Location: recipe.php?id=' . $commentRecipeId);
+    header('Location: recipe.php?id=' . $commentRecipeId . '&comment_status=pending');
     exit;
 }
 
@@ -140,6 +145,7 @@ $stmt = $pdo->prepare(
     'SELECT
         r.recipe_id AS id,
         r.owner_id,
+        r.moderation_status,
         r.photo,
         r.title,
         r.prep_time_minutes,
@@ -156,6 +162,16 @@ $recipe = $stmt->fetch();
 
 if (!$recipe) {
     die('Recipe not found.');
+}
+
+$canReviewContent = cookbook_is_moderator($currentUser);
+if (
+    $recipe['moderation_status'] !== 'approved'
+    && !$canReviewContent
+    && (!$currentUser || (int) $recipe['owner_id'] !== (int) $currentUser['id'])
+) {
+    http_response_code(404);
+    exit('Recipe not found.');
 }
 
 $userCollections = [];
@@ -231,7 +247,7 @@ $commentsStmt = $pdo->prepare(
         u.username
      FROM recipe_comments rc
      JOIN users u ON u.user_id = rc.user_id
-     WHERE rc.recipe_id = :recipe_id
+    WHERE rc.recipe_id = :recipe_id AND rc.moderation_status = "approved"
      ORDER BY rc.created_at DESC'
 );
 
@@ -322,6 +338,12 @@ include "../includes/header.php";
             <h1 class="card-title">
                 <?php echo htmlspecialchars($recipe['title'], ENT_QUOTES, 'UTF-8'); ?>
             </h1>
+
+            <?php if ($recipe['moderation_status'] === 'pending'): ?>
+                <div class="alert alert-warning" role="status">This recipe is awaiting moderator approval and is only visible to you and moderators.</div>
+            <?php elseif ($recipe['moderation_status'] === 'rejected'): ?>
+                <div class="alert alert-danger" role="status">This recipe was not approved and is not visible in public search.</div>
+            <?php endif; ?>
 
             <?php if ($canManageRecipe): ?>
                 <a href="edit-recipe.php?id=<?php echo (int)$recipeId; ?>" class="btn btn-outline-primary mb-3">
@@ -472,6 +494,12 @@ include "../includes/header.php";
                 </div>
 
                 <h4>Write a Comment</h4>
+
+                <?php if (($_GET['comment_status'] ?? '') === 'pending'): ?>
+                    <div class="alert alert-info" role="status">Your comment was submitted for moderator review.</div>
+                <?php elseif (($_GET['comment_status'] ?? '') === 'links-blocked'): ?>
+                    <div class="alert alert-warning" role="alert">Comments cannot contain external links.</div>
+                <?php endif; ?>
 
                 <?php if ($currentUser): ?>
                     <form method="post" class="mb-4">

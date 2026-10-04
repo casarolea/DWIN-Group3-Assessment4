@@ -15,6 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message = 'Enter a collection name of up to 100 characters.';
     } elseif (strlen($description) > 500) {
         $message = 'The description must be 500 characters or fewer.';
+    } elseif (cookbook_reject_external_links($collectionName . "\n" . $description)) {
+        $message = 'Collection names and descriptions cannot contain external links.';
     } else {
         try {
             $statement = $pdo->prepare(

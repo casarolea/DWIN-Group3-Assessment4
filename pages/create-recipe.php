@@ -43,6 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($f['size'] > 4 * 1024 * 1024) $errors[] = 'Photo cannot exceed 4MB.';
     }
 
+    if (cookbook_reject_external_links($title)) {
+      $errors[] = 'Recipe titles cannot contain external links.';
+    }
+
     if ($title === '') $errors[] = 'Enter a recipe title.';
     if ($categoryId <= 0) $errors[] = 'Choose a category.';
 
@@ -76,6 +80,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+      if (cookbook_reject_external_links($ingredientsText . "\n" . $instructionsText)) {
+        $errors[] = 'Recipe ingredients and instructions cannot contain external links.';
+      }
+
     $prepMin  = minutesFrom($_POST['prep'] ?? '');
     $cookMin  = minutesFrom($_POST['cook'] ?? '');
     $servesRaw = $_POST['serves'] ?? '';
@@ -89,6 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$errors) {
         try {
             $pdo->beginTransaction();
+        $moderationStatus = $currentUser['role'] === 'admin' ? 'approved' : 'pending';
 
             // save the photo to disk
             $dir = __DIR__ . '/../images/recipes/';
@@ -100,13 +109,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $stmt = $pdo->prepare(
                 'INSERT INTO recipes (title, prep_time_minutes, cook_time_minutes, servings,
-               calories_per_serving, protein_g, carbs_g, fat_g, ingredients, instructions, photo, owner_id)
-               VALUES (?,?,?,?,?,?,?,?,?,?,?,?)'
+                 calories_per_serving, protein_g, carbs_g, fat_g, ingredients, instructions, photo, owner_id, moderation_status)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)'
             );
             $stmt->execute([
                 $title, $prepMin, $cookMin, $servings,
                 $calories, $protein, $carbs, $fat,
-              trim($ingredientsText), trim($instructionsText), $photoName, $currentUser['id'],
+              trim($ingredientsText), trim($instructionsText), $photoName, $currentUser['id'], $moderationStatus,
             ]);
             $recipeId = $pdo->lastInsertId();
             $pdo->prepare('INSERT INTO recipe_categories (recipe_id, category_id) VALUES (?, ?)')
@@ -115,10 +124,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'INSERT INTO recipe_media (recipe_id, media_path, media_type, mime_type) VALUES (?, ?, ?, ?)'
             )->execute([$recipeId, 'recipes/' . $photoName, 'image', $mime]);
             cookbook_store_recipe_media($pdo, (int) $recipeId, $additionalMedia);
+            if ($moderationStatus === 'approved') {
+              cookbook_record_recipe_activity($pdo, $currentUser, 'recipe_created', (int) $recipeId, $title);
+            }
             $pdo->commit();
 
             // redirect to avoid resubmission on refresh
-            header('Location: create-recipe.php?saved=1');
+            header('Location: create-recipe.php?saved=1&review=' . $moderationStatus);
             exit;
         } catch (Exception $e) {
             $pdo->rollBack();
@@ -129,9 +141,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 if (isset($_GET['saved'])) $saved = true;
+$reviewStatus = $_GET['review'] ?? '';
 
 // ---------- Recent recipes to show in "My Recipes" ----------
-$recentQuery = 'SELECT r.recipe_id, r.title, r.prep_time_minutes, r.cook_time_minutes, r.servings, r.photo,
+$recentQuery = 'SELECT r.recipe_id, r.title, r.prep_time_minutes, r.cook_time_minutes, r.servings, r.photo, r.moderation_status,
              c.category_name
         FROM recipes r
         LEFT JOIN recipe_categories rc ON rc.recipe_id = r.recipe_id
@@ -162,7 +175,9 @@ include "../includes/header.php";
   <h1 class="recipe-title gochihand text-center">Create a Recipe</h1>
 
   <?php if ($saved): ?>
-    <div class="recipe-summary-success" role="status">Recipe saved. You can see it under My Recipes below.</div>
+    <div class="recipe-summary-success" role="status">
+      <?php echo $reviewStatus === 'pending' ? 'Recipe submitted for moderator review.' : 'Recipe published. You can see it under My Recipes below.'; ?>
+    </div>
   <?php endif; ?>
 
   <?php if ($errors): ?>
@@ -415,6 +430,7 @@ include "../includes/header.php";
               <div>
                 <h3><?= h($r['title']) ?></h3>
                 <p class="recipe-meta">
+                  <span class="badge badge-<?= h($r['moderation_status'] === 'approved' ? 'success' : ($r['moderation_status'] === 'rejected' ? 'danger' : 'warning')) ?>"><?= h(ucfirst($r['moderation_status'])) ?></span>
                   <?= h($r['category_name'] ?? '') ?><?= $r['servings'] ? ', Serves ' . h($r['servings']) : '' ?><?= $r['prep_time_minutes'] ? ', Prep ' . h($r['prep_time_minutes']) . ' min' : '' ?><?= $r['cook_time_minutes'] ? ', Cook ' . h($r['cook_time_minutes']) . ' min' : '' ?>
                 </p>
               </div>

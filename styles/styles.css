@@ -627,6 +627,25 @@ body.recipe-detail-page main {
     line-height: 1.65;
 }
 
+.activity-feed {
+    margin: 0 auto;
+    max-width: 900px;
+}
+
+.activity-item {
+    border-bottom: 1px solid rgba(101, 76, 67, 0.2);
+    padding: 16px 8px;
+}
+
+.activity-item:first-child {
+    border-top: 1px solid rgba(101, 76, 67, 0.2);
+}
+
+.activity-item a {
+    color: #8f6956;
+    font-family: 'RalewayB', sans-serif;
+}
+
 /* ==== START OF ADMIN DASHBOARD ==== */
 .admin-dashboard {
     background-color: #f8f6ee;

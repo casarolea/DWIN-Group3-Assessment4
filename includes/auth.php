@@ -44,12 +44,13 @@ function cookbook_db(): PDO
             username VARCHAR(80) NOT NULL,
             email VARCHAR(254) NOT NULL UNIQUE,
             password_hash VARCHAR(255) NOT NULL,
-            role ENUM('user', 'admin') NOT NULL DEFAULT 'user',
+            role ENUM('user', 'moderator', 'admin') NOT NULL DEFAULT 'user',
             full_name VARCHAR(120) NULL,
             location VARCHAR(120) NULL,
             profile_photo VARCHAR(255) NULL,
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+        $pdo->exec("ALTER TABLE users MODIFY role ENUM('user', 'moderator', 'admin') NOT NULL DEFAULT 'user'");
         $pdo->exec('ALTER TABLE users ADD COLUMN IF NOT EXISTS full_name VARCHAR(120) NULL');
         $pdo->exec('ALTER TABLE users ADD COLUMN IF NOT EXISTS location VARCHAR(120) NULL');
         $pdo->exec('ALTER TABLE users ADD COLUMN IF NOT EXISTS profile_photo VARCHAR(255) NULL');
@@ -65,6 +66,8 @@ function cookbook_db(): PDO
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
         $pdo->exec('ALTER TABLE recipes ADD COLUMN IF NOT EXISTS owner_id INT UNSIGNED NULL');
         $pdo->exec('ALTER TABLE recipes ADD COLUMN IF NOT EXISTS photo VARCHAR(255) NULL');
+        $pdo->exec("ALTER TABLE recipes ADD COLUMN IF NOT EXISTS moderation_status ENUM('pending', 'approved', 'rejected') NOT NULL DEFAULT 'approved'");
+        $pdo->exec("ALTER TABLE recipes ADD COLUMN IF NOT EXISTS pending_event ENUM('created', 'updated') NOT NULL DEFAULT 'created'");
         $pdo->exec("CREATE TABLE IF NOT EXISTS recipe_media (
             media_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             recipe_id INT NOT NULL,
@@ -106,11 +109,25 @@ function cookbook_db(): PDO
             recipe_id INT NOT NULL,
             comment_text TEXT NOT NULL,
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            moderation_status ENUM('pending', 'approved', 'rejected') NOT NULL DEFAULT 'approved',
             INDEX idx_recipe_comments_recipe (recipe_id),
             CONSTRAINT fk_recipe_comments_user FOREIGN KEY (user_id)
                 REFERENCES users(user_id) ON DELETE CASCADE,
             CONSTRAINT fk_recipe_comments_recipe FOREIGN KEY (recipe_id)
                 REFERENCES recipes(recipe_id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+        $pdo->exec("ALTER TABLE recipe_comments ADD COLUMN IF NOT EXISTS moderation_status ENUM('pending', 'approved', 'rejected') NOT NULL DEFAULT 'approved'");
+        $pdo->exec("CREATE TABLE IF NOT EXISTS recipe_activity (
+            activity_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            actor_id INT UNSIGNED NULL,
+            actor_name VARCHAR(80) NOT NULL,
+            event_type ENUM('recipe_created', 'recipe_updated', 'recipe_deleted') NOT NULL,
+            recipe_id INT NULL,
+            recipe_title VARCHAR(255) NOT NULL,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            INDEX idx_recipe_activity_created (created_at),
+            CONSTRAINT fk_recipe_activity_actor FOREIGN KEY (actor_id)
+                REFERENCES users(user_id) ON DELETE SET NULL
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
         $pdo->exec("CREATE TABLE IF NOT EXISTS user_collections (
             collection_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -161,6 +178,36 @@ function cookbook_require_role(string $role): void
         http_response_code(403);
         exit('Access denied. This page requires ' . htmlspecialchars($role, ENT_QUOTES, 'UTF-8') . ' access.');
     }
+}
+
+function cookbook_is_moderator(?array $user = null): bool
+{
+    $user = $user ?? cookbook_current_user();
+    return $user !== null && in_array($user['role'] ?? '', ['moderator', 'admin'], true);
+}
+
+function cookbook_reject_external_links(string $content): bool
+{
+    return preg_match('~(?:https?://|www\.)~i', $content) === 1;
+}
+
+function cookbook_record_recipe_activity(PDO $pdo, ?array $actor, string $eventType, ?int $recipeId, string $recipeTitle): void
+{
+    if (!in_array($eventType, ['recipe_created', 'recipe_updated', 'recipe_deleted'], true)) {
+        throw new InvalidArgumentException('Unsupported recipe activity event.');
+    }
+
+    $statement = $pdo->prepare(
+        'INSERT INTO recipe_activity (actor_id, actor_name, event_type, recipe_id, recipe_title)
+         VALUES (?, ?, ?, ?, ?)'
+    );
+    $statement->execute([
+        $actor['id'] ?? null,
+        $actor['username'] ?? 'Former user',
+        $eventType,
+        $recipeId,
+        $recipeTitle,
+    ]);
 }
 
 function cookbook_csrf_token(): string
